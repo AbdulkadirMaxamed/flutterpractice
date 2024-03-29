@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   return runApp(
@@ -16,28 +17,70 @@ void main() {
   );
 }
 
-class DicePage extends StatelessWidget {
+class DicePage extends StatefulWidget {
+  const DicePage({super.key});
+
+  @override
+  State<DicePage> createState() => _DicePageState();
+}
+
+class _DicePageState extends State<DicePage> {
+
+  int leftDiceNumber = 5;
+  int rightDiceNumber = 4;
+
+  int randomiser(){
+    Random random = new Random();
+    int randomNumber = random.nextInt(6)+1;
+    return randomNumber;
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
-      height: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image(
-            width: 100.0,
-              image: AssetImage('images/dice1.png')
-          ),
-          SizedBox(
-              width:10.0
-          ),
-          Image(
-            width: 100.0,
-              image: AssetImage('images/dice2.png')
-          )
-        ],
+      child: Center(
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextButton(
+                  onPressed: (){
+                    setState(() {
+                      leftDiceNumber = randomiser();
+                    });
+                    print("left dice is: $leftDiceNumber");
+                  },
+                  child: Image(
+                      image: AssetImage('images/dice${leftDiceNumber}.png')
+                  ),
+
+                ),
+              ),
+            ),
+            Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextButton(
+                    child: Image.asset(
+                        'images/dice$rightDiceNumber.png'
+                    ),
+                    onPressed: (){
+                      setState(() {
+                        rightDiceNumber = randomiser();
+                      });
+                      print("right dice is: $rightDiceNumber");
+                    },
+                  ),
+                )
+            )
+          ],
+        ),
       ),
     );
   }
 }
+
