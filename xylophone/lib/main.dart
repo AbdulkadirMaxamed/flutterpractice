@@ -4,6 +4,8 @@ import 'package:english_words/english_words.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 
+import 'package:flutter/widgets.dart';
+
 
 void main(){
   runApp(
@@ -13,7 +15,10 @@ void main(){
           title: Text("Xylophone App"),
           backgroundColor: Colors.brown,
         ),
-        body: xylophoneApp(),
+        body: SafeArea(
+          child: xylophoneApp(),
+        ),
+        backgroundColor: Colors.blueGrey,
       ),
     ),
   );
@@ -25,119 +30,33 @@ class xylophoneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String name = "Abdulkadir";
+    void playSound(sound){
+      final player = AudioPlayer();
+      player.play(AssetSource(sound));
+    }
 
-    return Row(
-      children: [
-        Column(
-          children: [
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note1.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.red,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note2.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.orange,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note3.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.yellow,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note4.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.green,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note5.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.teal,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note6.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.blue,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: (){
-                final player = AudioPlayer();
-                player.play(AssetSource('note7.wav'));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 50.0,
-                  width: 200.0,
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.purple,
-                ),
-              ),
-            ),
-          ],
+    Expanded buildComponent(Color boxColor,String sound){
+      return Expanded(
+        child: TextButton(
+          onPressed: (){
+            playSound(sound);
+          },
+          child: Container(
+            color: boxColor,
+          ),
         ),
+      );
+    };
+
+    return Column(
+      children: [
+        buildComponent(Colors.red,"note1.wav"),
+        buildComponent(Colors.orange,"note2.wav"),
+        buildComponent(Colors.yellow,"note3.wav"),
+        buildComponent(Colors.green,"note4.wav"),
+        buildComponent(Colors.teal,"note5.wav"),
+        buildComponent(Colors.blue,"note6.wav"),
+        buildComponent(Colors.purple,"note7.wav"),
       ],
     );
   }
