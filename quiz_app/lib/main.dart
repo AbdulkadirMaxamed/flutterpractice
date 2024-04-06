@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:quiz_app/questions.dart';
 
 void main() {
   runApp(
@@ -19,11 +20,18 @@ class QuizApp extends StatefulWidget {
 
 class _QuizAppState extends State<QuizApp> {
 
+  Questions q1 = Questions(q: "Sharks are mammal", a: false);
+  Questions q2 = Questions(q: "Sea otters have a favorite rock they use to break open food.", a: true);
+  Questions q3 = Questions(q: "The blue whale is the biggest animal to have ever lived.", a: true);
+  Questions q4 = Questions(q: "The hummingbird egg is the world's smallest bird egg.", a: true);
+  Questions q5 = Questions(q: "Bats are blind.", a: false);
 
-  List<String> questionsList = [
-    "Sharks are mammal",
-    "Sea otters have a favorite rock they use to break open food.",
-    "The blue whale is the biggest animal to have ever lived."
+  List<Questions> questionsList = [
+    Questions(q: "Sharks are mammal", a: false),
+    Questions(q: "Sea otters have a favorite rock they use to break open food.", a: true),
+    Questions(q: "The blue whale is the biggest animal to have ever lived.", a: true),
+    Questions(q: "The hummingbird egg is the world's smallest bird egg.", a: true),
+    Questions(q: "Bats are blind.", a: false)
   ];
 
   List<String> answerList = [
@@ -47,12 +55,12 @@ class _QuizAppState extends State<QuizApp> {
   //   return newQuestion;
   // }
 
-  Expanded btnBuilder(Color boxColor, String bool){
+  Expanded btnBuilder(Color boxColor, bool answerText){
     return Expanded(
       child: TextButton(
           onPressed: (){
             //checks if answer is correct
-            if(answerList[questionNumber]==bool){
+            if(questionsList[questionNumber].answer==answerText){
               results.add(
                   const Icon(
                     Icons.check,
@@ -82,7 +90,7 @@ class _QuizAppState extends State<QuizApp> {
           child: Container(
             color: boxColor,
             child: Center(
-                child: Text(bool,
+                child: Text("$answerText".toUpperCase(),
                   style: const TextStyle(
                       fontSize: 20.0,
                       color: Colors.white
@@ -106,7 +114,7 @@ class _QuizAppState extends State<QuizApp> {
               Expanded(
                 flex: 3,
                 child: Center(
-                    child: Text(questionsList[questionNumber],
+                    child: Text(questionsList[questionNumber].question,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25.0
@@ -114,8 +122,8 @@ class _QuizAppState extends State<QuizApp> {
                     )
                 ),
               ),
-              btnBuilder(Colors.green, "True"),
-              btnBuilder(Colors.red, "False"),
+              btnBuilder(Colors.green, true),
+              btnBuilder(Colors.red, false),
               //Todo: Create Score keeper
               //Todo: Create random question generator function
               Row(
