@@ -1,7 +1,7 @@
 class Questions{
 
-  String question="nothing";
-  bool answer=false;
+  late String question;
+  late bool answer;
 
   Questions({required String q, required bool a}){
     question = q;
