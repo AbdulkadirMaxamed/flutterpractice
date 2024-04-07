@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:quiz_app/questions.dart';
+import 'questionsBank.dart';
+
+QuestionsBank questionsBank = QuestionsBank();
 
 void main() {
   runApp(
@@ -19,26 +21,6 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-
-  Questions q1 = Questions(q: "Sharks are mammal", a: false);
-  Questions q2 = Questions(q: "Sea otters have a favorite rock they use to break open food.", a: true);
-  Questions q3 = Questions(q: "The blue whale is the biggest animal to have ever lived.", a: true);
-  Questions q4 = Questions(q: "The hummingbird egg is the world's smallest bird egg.", a: true);
-  Questions q5 = Questions(q: "Bats are blind.", a: false);
-
-  List<Questions> questionsList = [
-    Questions(q: "Sharks are mammal", a: false),
-    Questions(q: "Sea otters have a favorite rock they use to break open food.", a: true),
-    Questions(q: "The blue whale is the biggest animal to have ever lived.", a: true),
-    Questions(q: "The hummingbird egg is the world's smallest bird egg.", a: true),
-    Questions(q: "Bats are blind.", a: false)
-  ];
-
-  List<String> answerList = [
-    "False",
-    "True",
-    "True"
-  ];
 
   int questionNumber = 0;
 
@@ -60,7 +42,7 @@ class _QuizAppState extends State<QuizApp> {
       child: TextButton(
           onPressed: (){
             //checks if answer is correct
-            if(questionsList[questionNumber].answer==answerText){
+            if(questionsBank.questionsList[questionNumber].answer==answerText){
               results.add(
                   const Icon(
                     Icons.check,
@@ -77,7 +59,7 @@ class _QuizAppState extends State<QuizApp> {
             }
 
             //iterates to the next question
-            if(questionNumber==questionsList.length-1){
+            if(questionNumber==questionsBank.questionsList.length-1){
               setState(() {
                 questionNumber=0;
               });
@@ -114,7 +96,7 @@ class _QuizAppState extends State<QuizApp> {
               Expanded(
                 flex: 3,
                 child: Center(
-                    child: Text(questionsList[questionNumber].question,
+                    child: Text(questionsBank.questionsList[questionNumber].question,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25.0
