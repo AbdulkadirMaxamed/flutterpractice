@@ -28,21 +28,12 @@ class _QuizAppState extends State<QuizApp> {
 
   ];
 
-  // String randomQuestionsGenerator(){
-  //   int randomNum = Random().nextInt(questions.length);
-  //   setState(() {
-  //     newQuestion = questions[randomNum];
-  //   });
-  //   print(newQuestion);
-  //   return newQuestion;
-  // }
-
   Expanded btnBuilder(Color boxColor, bool answerText){
     return Expanded(
       child: TextButton(
           onPressed: (){
             //checks if answer is correct
-            if(questionsBank.questionsList[questionNumber].answer==answerText){
+            if(questionsBank.getAnswer(questionNumber)==answerText){
               results.add(
                   const Icon(
                     Icons.check,
@@ -59,7 +50,7 @@ class _QuizAppState extends State<QuizApp> {
             }
 
             //iterates to the next question
-            if(questionNumber==questionsBank.questionsList.length-1){
+            if(questionNumber==questionsBank.getNumberOfQuestions()-1){
               setState(() {
                 questionNumber=0;
               });
@@ -96,7 +87,7 @@ class _QuizAppState extends State<QuizApp> {
               Expanded(
                 flex: 3,
                 child: Center(
-                    child: Text(questionsBank.questionsList[questionNumber].question,
+                    child: Text(questionsBank.getQuestions(questionNumber),
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25.0

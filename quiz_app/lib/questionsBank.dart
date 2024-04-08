@@ -2,7 +2,7 @@ import 'questions.dart';
 
 class QuestionsBank{
 
-  List<Questions> questionsList = [
+  List<Questions> _questionsList = [
     Questions("Sharks are mammal",false),
     Questions("Sea otters have a favorite rock they use to break open food.",true),
     Questions("The blue whale is the biggest animal to have ever lived.",true),
@@ -35,5 +35,17 @@ class QuestionsBank{
         true),
 
   ];
+
+  String getQuestions(int questionNumber){
+    return _questionsList[questionNumber].question;
+  }
+
+  bool getAnswer(int questionNumber){
+    return _questionsList[questionNumber].answer;
+  }
+
+  int getNumberOfQuestions(){
+    return _questionsList.length;
+  }
 
 }
