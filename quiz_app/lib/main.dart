@@ -4,13 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'questionsBank.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuestionsBank questionsBank = QuestionsBank();
 
 void main() {
   runApp(
-      const QuizApp()
+      const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: QuizApp(),
+      )
   );
+
 }
 
 class QuizApp extends StatefulWidget {
@@ -49,11 +54,52 @@ class _QuizAppState extends State<QuizApp> {
               );
             }
 
+
             //iterates to the next question
             if(questionNumber==questionsBank.getNumberOfQuestions()-1){
-              setState(() {
-                questionNumber=0;
-              });
+              if(questionNumber==4){
+                Alert(
+                  context: context,
+                  type: AlertType.warning,
+                  title: "Quiz Finished",
+                  desc: "You got x/5? right",
+                  buttons: [
+                    DialogButton(
+                      onPressed: (){
+                        setState(() {
+                          questionNumber=0;
+                          results.clear();
+                        });
+                        Navigator.pop(context);
+                      },
+                      color: Color.fromRGBO(0, 179, 134, 1.0),
+                      child: const Text(
+                        "Retry",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ),
+                    DialogButton(
+                      onPressed: (){
+                        setState(() {
+                          questionNumber++;
+                          results.clear();
+                        });
+                        Navigator.pop(context);
+                      },
+                      gradient: const LinearGradient(colors: [
+                        Color.fromRGBO(116, 116, 191, 1.0),
+                        Color.fromRGBO(52, 138, 199, 1.0)
+                      ]),
+                      child: const Text(
+                        "Continue",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    )
+                  ],
+                ).show();
+              }else{
+                questionNumber++;
+              }
             }else{
               setState(() {
                 questionNumber++;
@@ -77,8 +123,7 @@ class _QuizAppState extends State<QuizApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.black26,
         body: SafeArea(
           child: Column(
@@ -97,15 +142,18 @@ class _QuizAppState extends State<QuizApp> {
               ),
               btnBuilder(Colors.green, true),
               btnBuilder(Colors.red, false),
-              //Todo: Create Score keeper
-              //Todo: Create random question generator function
               Row(
                 children: results,
               )
             ],
           ),
         ),
-      ),
-    );
+      );
   }
+  // _onBasicAlertPressed(context) {
+  //   Alert(context: context, title: "RFLUTTER", desc: "Flutter is awesome.").show();
+  // }
+
 }
+
+
