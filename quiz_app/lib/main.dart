@@ -29,6 +29,8 @@ class _QuizAppState extends State<QuizApp> {
 
   int questionNumber = 0;
 
+  int totalQuestions = questionsBank.getNumberOfQuestions();
+
   List<Icon> results = [
 
   ];
@@ -54,15 +56,42 @@ class _QuizAppState extends State<QuizApp> {
               );
             }
 
+            //TODO: make a right answers variable that tracks how many right answers submitted
+            //todo: make a function for the alerts
+            //todo: need to make the icon not reach the end of the screen
 
             //iterates to the next question
             if(questionNumber==questionsBank.getNumberOfQuestions()-1){
-              if(questionNumber==4){
+              print("im here");
+              Alert(
+                context: context,
+                type: AlertType.warning,
+                title: "You completed the quiz",
+                desc: "You got x/$totalQuestions right",
+                buttons: [
+                  DialogButton(
+                    onPressed: (){
+                      setState(() {
+                        questionNumber=0;
+                        results.clear();
+                      });
+                      Navigator.pop(context);
+                    },
+                    color: Colors.red,
+                    child: const Text(
+                      "Retry",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  )
+                ]
+              ).show();
+            }else{
+              if(questionNumber==9){
                 Alert(
                   context: context,
                   type: AlertType.warning,
-                  title: "Quiz Finished",
-                  desc: "You got x/5? right",
+                  title: "You completed FIRST 10",
+                  desc: "You got x/$totalQuestions? right $questionNumber",
                   buttons: [
                     DialogButton(
                       onPressed: (){
@@ -72,7 +101,7 @@ class _QuizAppState extends State<QuizApp> {
                         });
                         Navigator.pop(context);
                       },
-                      color: Color.fromRGBO(0, 179, 134, 1.0),
+                      color: Colors.red,
                       child: const Text(
                         "Retry",
                         style: TextStyle(color: Colors.white, fontSize: 20),
@@ -86,10 +115,7 @@ class _QuizAppState extends State<QuizApp> {
                         });
                         Navigator.pop(context);
                       },
-                      gradient: const LinearGradient(colors: [
-                        Color.fromRGBO(116, 116, 191, 1.0),
-                        Color.fromRGBO(52, 138, 199, 1.0)
-                      ]),
+                      color: Colors.green,
                       child: const Text(
                         "Continue",
                         style: TextStyle(color: Colors.white, fontSize: 20),
@@ -97,13 +123,48 @@ class _QuizAppState extends State<QuizApp> {
                     )
                   ],
                 ).show();
-              }else{
-                questionNumber++;
+              }else if(questionNumber==4){
+                Alert(
+                  context: context,
+                  type: AlertType.warning,
+                  title: "You completed FIRST 5",
+                  desc: "You got x/10? right",
+                  buttons: [
+                    DialogButton(
+                      onPressed: (){
+                        setState(() {
+                          questionNumber=0;
+                          results.clear();
+                        });
+                        Navigator.pop(context);
+                      },
+                      color: Colors.red,
+                      child: const Text(
+                        "Retry",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ),
+                    DialogButton(
+                      onPressed: (){
+                        setState(() {
+                          questionNumber++;
+                          results.clear();
+                        });
+                        Navigator.pop(context);
+                      },
+                      color: Colors.green,
+                      child: const Text(
+                        "Continue",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    )
+                  ],
+                ).show();
               }
-            }else{
               setState(() {
                 questionNumber++;
               });
+              print("loop again $questionNumber is our question number & $totalQuestions");
             }
           },
           child: Container(
