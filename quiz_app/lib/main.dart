@@ -31,6 +31,8 @@ class _QuizAppState extends State<QuizApp> {
 
   int totalQuestions = questionsBank.getNumberOfQuestions();
 
+  int usersAnswers = 0;
+
   List<Icon> results = [
 
   ];
@@ -41,6 +43,7 @@ class _QuizAppState extends State<QuizApp> {
           onPressed: (){
             //checks if answer is correct
             if(questionsBank.getAnswer(questionNumber)==answerText){
+              usersAnswers++;
               results.add(
                   const Icon(
                     Icons.check,
@@ -56,115 +59,21 @@ class _QuizAppState extends State<QuizApp> {
               );
             }
 
-            //TODO: make a right answers variable that tracks how many right answers submitted
-            //todo: make a function for the alerts
-            //todo: need to make the icon not reach the end of the screen
-
             //iterates to the next question
             if(questionNumber==questionsBank.getNumberOfQuestions()-1){
-              print("im here");
-              Alert(
-                context: context,
-                type: AlertType.warning,
-                title: "You completed the quiz",
-                desc: "You got x/$totalQuestions right",
-                buttons: [
-                  DialogButton(
-                    onPressed: (){
-                      setState(() {
-                        questionNumber=0;
-                        results.clear();
-                      });
-                      Navigator.pop(context);
-                    },
-                    color: Colors.red,
-                    child: const Text(
-                      "Retry",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                  )
-                ]
-              ).show();
+              completed(context);
             }else{
-              if(questionNumber==9){
-                Alert(
-                  context: context,
-                  type: AlertType.warning,
-                  title: "You completed FIRST 10",
-                  desc: "You got x/$totalQuestions? right $questionNumber",
-                  buttons: [
-                    DialogButton(
-                      onPressed: (){
-                        setState(() {
-                          questionNumber=0;
-                          results.clear();
-                        });
-                        Navigator.pop(context);
-                      },
-                      color: Colors.red,
-                      child: const Text(
-                        "Retry",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ),
-                    DialogButton(
-                      onPressed: (){
-                        setState(() {
-                          questionNumber++;
-                          results.clear();
-                        });
-                        Navigator.pop(context);
-                      },
-                      color: Colors.green,
-                      child: const Text(
-                        "Continue",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show();
+              //this checks if the question we are currently on meets the first 5 or 10 questions
+              if(questionNumber==14){
+                firstFifteen(context, 15);
+              }else if(questionNumber==9){
+                firstTen(context, 10);
               }else if(questionNumber==4){
-                Alert(
-                  context: context,
-                  type: AlertType.warning,
-                  title: "You completed FIRST 5",
-                  desc: "You got x/10? right",
-                  buttons: [
-                    DialogButton(
-                      onPressed: (){
-                        setState(() {
-                          questionNumber=0;
-                          results.clear();
-                        });
-                        Navigator.pop(context);
-                      },
-                      color: Colors.red,
-                      child: const Text(
-                        "Retry",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ),
-                    DialogButton(
-                      onPressed: (){
-                        setState(() {
-                          questionNumber++;
-                          results.clear();
-                        });
-                        Navigator.pop(context);
-                      },
-                      color: Colors.green,
-                      child: const Text(
-                        "Continue",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ).show();
+                firstFive(context, 5);
               }
               setState(() {
                 questionNumber++;
               });
-              print("loop again $questionNumber is our question number & $totalQuestions");
             }
           },
           child: Container(
@@ -211,9 +120,209 @@ class _QuizAppState extends State<QuizApp> {
         ),
       );
   }
-  // _onBasicAlertPressed(context) {
-  //   Alert(context: context, title: "RFLUTTER", desc: "Flutter is awesome.").show();
-  // }
+
+  //questions alert point
+  void completed(context){
+    Alert(
+        context: context,
+        style: const AlertStyle(
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 300)
+        ),
+        type: AlertType.warning,
+        title: "You completed the quiz",
+        desc: "You got $usersAnswers/$totalQuestions right",
+        buttons: [
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                questionNumber=0;
+                usersAnswers=0;
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.red,
+            child: const Text(
+              "Retry",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]
+    ).show();
+  }
+
+  void firstFifteen(context, questionsCompleted){
+    if(usersAnswers<=questionsCompleted-3){
+      unsuccessful(context, 15);
+    }else{
+      Alert(
+        context: context,
+        style: const AlertStyle(
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 300)
+        ),
+        type: AlertType.warning,
+        title: "You completed FIRST $questionsCompleted",
+        desc: "You got $usersAnswers/$questionsCompleted",
+        buttons: [
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                questionNumber=0;
+                usersAnswers=0;
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.red,
+            child: const Text(
+              "Retry",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.green,
+            child: const Text(
+              "Continue",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ],
+      ).show();
+    }
+  }
+
+  void firstTen(context, questionsCompleted){
+    if(usersAnswers<=questionsCompleted-3){
+      unsuccessful(context, 10);
+    }else{
+      Alert(
+        context: context,
+        style: const AlertStyle(
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 300)
+        ),
+        type: AlertType.warning,
+        title: "You completed FIRST $questionsCompleted",
+        desc: "You got $usersAnswers/$questionsCompleted",
+        buttons: [
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                questionNumber=0;
+                usersAnswers=0;
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.red,
+            child: const Text(
+              "Retry",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.green,
+            child: const Text(
+              "Continue",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ],
+      ).show();
+    }
+  }
+
+  void firstFive(context, questionsCompleted){
+    if(usersAnswers<=questionsCompleted-2){
+      unsuccessful(context, 5);
+    }else{
+      Alert(
+        context: context,
+        style: const AlertStyle(
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 300)
+        ),
+        type: AlertType.warning,
+        title: "You completed FIRST $questionsCompleted",
+        desc: "You got $usersAnswers/$questionsCompleted right",
+        buttons: [
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                questionNumber=0;
+                usersAnswers=0;
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.red,
+            child: const Text(
+              "Retry",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.green,
+            child: const Text(
+              "Continue",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ],
+      ).show();
+    }
+
+  }
+
+  void unsuccessful(context, questionCompleted){
+    Alert(
+        context: context,
+        style: const AlertStyle(
+            animationType: AnimationType.fromBottom,
+            animationDuration: Duration(milliseconds: 300)
+        ),
+        type: AlertType.warning,
+        title: "Unsuccessful, try again",
+        desc: "You got $usersAnswers/$questionCompleted right",
+        buttons: [
+          DialogButton(
+            onPressed: (){
+              setState(() {
+                questionNumber=0;
+                usersAnswers=0;
+                results.clear();
+              });
+              Navigator.pop(context);
+            },
+            color: Colors.red,
+            child: const Text(
+              "Retry",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]
+    ).show();
+  }
 
 }
 

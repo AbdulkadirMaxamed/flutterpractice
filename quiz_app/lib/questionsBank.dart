@@ -27,13 +27,14 @@ class QuestionsBank{
         'The total surface area of two human lungs is approximately 70 square metres.',
         true),
     Questions('Google was originally called \"Backrub\".', true),
-    // Questions(
-    //     'Chocolate affects a dog\'s heart and nervous system; a few ounces are enough to kill a small dog.',
-    //     true),
-    // Questions(
-    //     'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
-    //     true),
-
+    Questions(
+        'Chocolate affects a dog\'s heart and nervous system; a few ounces are enough to kill a small dog.',
+        true),
+    Questions(
+        'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
+        true),
+    Questions("Human skin regenerates every week.", false),
+    Questions("The average human sneeze can be clocked at 100 miles an hour.", true)
   ];
 
   String getQuestions(int questionNumber){
