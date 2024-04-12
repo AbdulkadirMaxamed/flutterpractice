@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:story_game/checkpoints.dart';
+
+Checkpoints storyQuestion = Checkpoints();
 
 void main(){
   runApp(
@@ -20,7 +23,7 @@ class StoryApp extends StatefulWidget {
 
 class _StoryAppState extends State<StoryApp> {
 
-  Expanded btnBuilder(Color colour, response){
+  Expanded btnBuilder(Color colour, String response){
     return Expanded(
         child: TextButton(
           onPressed: (){
@@ -53,14 +56,14 @@ class _StoryAppState extends State<StoryApp> {
               Expanded(
                 flex: 2,
                 child: Center(
-                  child: Text("Question Goes here"),
+                  child: Text(storyQuestion.getCheckpoint(0)),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  btnBuilder(Colors.red, "path 1"),
-                  btnBuilder(Colors.blue, "path 2")
+                  btnBuilder(Colors.red, storyQuestion.storyCheckpoints[0].response1),
+                  btnBuilder(Colors.blue, storyQuestion.storyCheckpoints[0].response2)
                 ],
               )
             ],
