@@ -20,24 +20,45 @@ class StoryApp extends StatefulWidget {
   State<StoryApp> createState() => _StoryAppState();
 }
 
+  int StoryCheckpointPosition = 0;
 
 class _StoryAppState extends State<StoryApp> {
 
+  //setup button builder for selection of next options
   Expanded btnBuilder(Color colour, String response){
     return Expanded(
         child: TextButton(
           onPressed: (){
-            print(response);
+
+            //get story length
+            if(StoryCheckpointPosition<storyQuestion.getStoryLength()){
+              //check if the response chosen by user
+              if(response==storyQuestion.getChoice1(StoryCheckpointPosition) && StoryCheckpointPosition==0){
+                setState(() {
+                  StoryCheckpointPosition+=2;
+                });
+              }else{
+                setState(() {
+                  StoryCheckpointPosition++;
+                });
+              }
+            }
+
           },
-          child: Container(
-            height: 50.0,
-            color: colour,
-            child: Center(
-              child: Text(
-                "$response",
-                style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.white
+          child: Visibility(
+            visible: storyQuestion.getVisibility(false),
+            child: Container(
+              color: colour,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    response,
+                    style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -45,6 +66,10 @@ class _StoryAppState extends State<StoryApp> {
         )
     );
   }
+
+  //TODO: IF the response contains something, show button if not do not show the button
+  //todo: increase the story amount
+  //todo: fix story logic
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +81,19 @@ class _StoryAppState extends State<StoryApp> {
               Expanded(
                 flex: 2,
                 child: Center(
-                  child: Text(storyQuestion.getCheckpoint(0)),
+                  child: Text(
+                      storyQuestion.getCheckpoint(StoryCheckpointPosition),
+                      style: const TextStyle(
+                        fontSize: 20
+                      ),
+                  ),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  btnBuilder(Colors.red, storyQuestion.storyCheckpoints[0].response1),
-                  btnBuilder(Colors.blue, storyQuestion.storyCheckpoints[0].response2)
+                  btnBuilder(Colors.red, storyQuestion.getChoice1(StoryCheckpointPosition)),
+                  btnBuilder(Colors.blue, storyQuestion.getChoice2(StoryCheckpointPosition))
                 ],
               )
             ],
