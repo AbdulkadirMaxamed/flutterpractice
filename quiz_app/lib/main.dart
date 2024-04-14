@@ -27,6 +27,8 @@ class QuizApp extends StatefulWidget {
 
 class _QuizAppState extends State<QuizApp> {
 
+  //todo: change logo for the app
+
   int questionNumber = 0;
 
   int totalQuestions = questionsBank.getNumberOfQuestions();

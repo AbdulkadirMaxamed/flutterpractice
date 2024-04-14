@@ -25,7 +25,7 @@ class StoryApp extends StatefulWidget {
 class _StoryAppState extends State<StoryApp> {
 
   //setup button builder for selection of next options
-  Expanded btnBuilder(Color colour, String response){
+  Expanded btnBuilder(Color colour, String response, bool visibility){
     return Expanded(
         child: TextButton(
           onPressed: (){
@@ -33,7 +33,15 @@ class _StoryAppState extends State<StoryApp> {
             //get story length
             if(StoryCheckpointPosition<storyQuestion.getStoryLength()){
               //check if the response chosen by user
-              if(response==storyQuestion.getChoice1(StoryCheckpointPosition) && StoryCheckpointPosition==0){
+              if(response==storyQuestion.getChoice1(StoryCheckpointPosition) && StoryCheckpointPosition==2) {
+                setState(() {
+                  StoryCheckpointPosition += 3;
+                });
+              }else if(response==storyQuestion.getChoice2(StoryCheckpointPosition) && StoryCheckpointPosition==1) {
+                setState(() {
+                  StoryCheckpointPosition += 2;
+                });
+              }else if(response==storyQuestion.getChoice1(StoryCheckpointPosition) && StoryCheckpointPosition==0){
                 setState(() {
                   StoryCheckpointPosition+=2;
                 });
@@ -44,9 +52,15 @@ class _StoryAppState extends State<StoryApp> {
               }
             }
 
+            if(response=="Restart") {
+              setState(() {
+                StoryCheckpointPosition = 0;
+              });
+            }
+            print(StoryCheckpointPosition);
           },
           child: Visibility(
-            visible: storyQuestion.getVisibility(false),
+            visible: visibility,
             child: Container(
               color: colour,
               child: Center(
@@ -67,9 +81,8 @@ class _StoryAppState extends State<StoryApp> {
     );
   }
 
-  //TODO: IF the response contains something, show button if not do not show the button
-  //todo: increase the story amount
-  //todo: fix story logic
+  //todo: add background image to make the app look better
+  //todo: add alert buttons to say you lose/you won after story logic fixed
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +105,8 @@ class _StoryAppState extends State<StoryApp> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  btnBuilder(Colors.red, storyQuestion.getChoice1(StoryCheckpointPosition)),
-                  btnBuilder(Colors.blue, storyQuestion.getChoice2(StoryCheckpointPosition))
+                  btnBuilder(Colors.red, storyQuestion.getChoice1(StoryCheckpointPosition), true),
+                  btnBuilder(Colors.blue, storyQuestion.getChoice2(StoryCheckpointPosition), storyQuestion.getVisibility(StoryCheckpointPosition))
                 ],
               )
             ],

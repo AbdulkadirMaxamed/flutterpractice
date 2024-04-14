@@ -29,11 +29,13 @@ class Checkpoints {
         '')
   ];
 
+  bool getVisibility(int number){
+    bool visibility = true;
+    if(_storyCheckpoints[number].response2.length<1){
+      visibility=false;
+    }
+    return visibility;
 
-//todo: fix visibility logic
-  bool getVisibility(bool isVisible){
-    bool visible=isVisible;
-    return visible;
   }
 
   String getCheckpoint(int number){
@@ -41,20 +43,10 @@ class Checkpoints {
   }
 
   String getChoice1(int number){
-    if(_storyCheckpoints[number].response1.isEmpty){
-      getVisibility(false);
-    }else{
-      getVisibility(true);
-    }
     return _storyCheckpoints[number].response1;
   }
 
   String getChoice2(int number){
-    if(_storyCheckpoints[number].response2.isEmpty){
-      getVisibility(false);
-    }else{
-      getVisibility(true);
-    }
     return _storyCheckpoints[number].response2;
   }
 
