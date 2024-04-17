@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const Color cardColour = Color(0xff151641);
+
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
 
@@ -9,18 +11,6 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
 
-  Expanded Containers(String text){
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(8),
-        width: 150,
-        height: 150,
-        color: Color(0xff151641),
-        child: Center(child: Text(text)),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,31 +19,72 @@ class _InputPageState extends State<InputPage> {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Containers("Male"),
-              Containers("Female"),
-            ],
+          const Expanded(
+              child: Row(
+                children: [
+                  ReuseableCard(text: "Male", colour: cardColour),
+                  ReuseableCard(text: "Female", colour: cardColour)
+                ],
+              )
           ),
-          Row(
-            children: [
-              Containers("HEIGHT"),
-            ],
+          const Expanded(
+              child: ReuseableCard(text: "Height", colour: cardColour)
           ),
-          Row(
-            children: [
-              Containers("WEIGHT"),
-              Containers("AGE")
-            ],
+          const Expanded(
+              child: Row(
+                children: [
+                  ReuseableCard(text: "Weight", colour: cardColour),
+                  ReuseableCard(text: "Age", colour: cardColour)
+                ],
+              )
           ),
-          TextButton(
-              onPressed: (){
-                null;
-              },
-              child: Text("Calculate"))
+          Container(
+            color: Color(0xffeb1555),
+            margin: EdgeInsets.only(top: 10.0),
+            width: double.infinity,
+            height: 80.0,
+            child: TextButton(
+                onPressed: (){
+                  null;
+                },
+                child: const Text(
+                    "Calculate",
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.white
+                  ),
+                )
+            ),
+          )
         ],
       ),
 
+    );
+  }
+}
+
+class ReuseableCard extends StatelessWidget {
+
+  //constructor
+  const ReuseableCard({super.key,
+    required this.colour,
+    required this.text,
+  });
+
+  final Color colour;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: colour,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Center(child: Text(text)),
+      ),
     );
   }
 }
