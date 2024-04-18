@@ -22,19 +22,87 @@ class _InputPageState extends State<InputPage> {
           const Expanded(
               child: Row(
                 children: [
-                  ReuseableCard(text: "Male", colour: cardColour),
-                  ReuseableCard(text: "Female", colour: cardColour)
+                  ReuseableCard(
+                      childCard: Center(
+                          child: IconContent(icon: Icons.male, cardText: "MALE")
+                      ),
+                      colour: cardColour
+                  ),
+                  ReuseableCard(
+                      childCard: Center(
+                          child: IconContent(icon: Icons.female, cardText: "FEMALE")
+                      ),
+                      colour: cardColour
+                  ),
                 ],
               )
           ),
           const Expanded(
-              child: ReuseableCard(text: "Height", colour: cardColour)
+              child: ReuseableCard(
+                  childCard: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Height",
+                            style: TextStyle(
+                                fontSize: 20.0
+                            ),
+                          ),
+                          Icon(
+                            Icons.female,
+                            size: 100,
+                            semanticLabel: "Male",
+                          ),
+                        ],
+                      )
+                  ),
+                  colour: cardColour
+              ),
           ),
           const Expanded(
               child: Row(
                 children: [
-                  ReuseableCard(text: "Weight", colour: cardColour),
-                  ReuseableCard(text: "Age", colour: cardColour)
+                  ReuseableCard(
+                      childCard: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Weight",
+                                style: TextStyle(
+                                    fontSize: 20.0
+                                ),
+                              ),
+                              Icon(
+                                Icons.female,
+                                size: 100,
+                              ),
+                            ],
+                          )
+                      ),
+                      colour: cardColour
+                  ),
+                  ReuseableCard(
+                      childCard: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Height",
+                                style: TextStyle(
+                                    fontSize: 20.0
+                                ),
+                              ),
+                              Icon(
+                                Icons.female,
+                                size: 100,
+                              ),
+                            ],
+                          )
+                      ),
+                      colour: cardColour
+                  ),
                 ],
               )
           ),
@@ -63,16 +131,47 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
+class IconContent extends StatelessWidget {
+  const IconContent({
+    super.key,
+    required this.icon,
+    required this.cardText
+  });
+
+  final IconData icon;
+  final String cardText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          icon,
+          size: 100.0,
+        ),
+        Text(
+          cardText,
+          style: const TextStyle(
+              fontSize: 20.0,
+              color: Color(0xff8d8e98)
+          ),
+        )
+      ],
+    );
+  }
+}
+
 class ReuseableCard extends StatelessWidget {
 
   //constructor
   const ReuseableCard({super.key,
     required this.colour,
-    required this.text,
+    required this.childCard
   });
 
   final Color colour;
-  final String text;
+  final Widget childCard;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +182,7 @@ class ReuseableCard extends StatelessWidget {
           color: colour,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Center(child: Text(text)),
+        child: childCard,
       ),
     );
   }
