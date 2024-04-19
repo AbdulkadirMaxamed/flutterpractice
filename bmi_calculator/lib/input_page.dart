@@ -1,6 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'icon_content.dart';
+import 'reuseable_card.dart';
 
-const Color cardColour = Color(0xff151641);
+const Color inactiveCardColour = Color(0xff151641);
+const Color activeCardColour = Color(0xff111328);
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -11,6 +16,9 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
 
+  Color _color = inactiveCardColour;
+  Color _femaleCardColour = inactiveCardColour;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,89 +27,86 @@ class _InputPageState extends State<InputPage> {
       ),
       body: Column(
         children: [
-          const Expanded(
+          Expanded(
               child: Row(
                 children: [
-                  ReuseableCard(
-                      childCard: Center(
-                          child: IconContent(icon: Icons.male, cardText: "MALE")
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          _color == activeCardColour ?
+                          _color = inactiveCardColour : _color = activeCardColour;
+                        });
+                      },
+                      child: ReuseableCard(
+                            childCard: const Center(
+                                  child: IconContent(icon: Icons.male, cardText: "MALE")
+                              ),
+                            colour: _color
                       ),
-                      colour: cardColour
+                    ),
                   ),
-                  ReuseableCard(
-                      childCard: Center(
-                          child: IconContent(icon: Icons.female, cardText: "FEMALE")
-                      ),
-                      colour: cardColour
+                  Expanded(
+                    child: ReuseableCard(
+                        childCard: GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              _femaleCardColour == activeCardColour ?
+                                  _femaleCardColour = inactiveCardColour : _femaleCardColour = activeCardColour;
+                            });
+                          },
+                          child: Center(
+                              child: IconContent(icon: Icons.female, cardText: "FEMALE")
+                          ),
+                        ),
+                        colour: _femaleCardColour
+                    ),
                   ),
                 ],
               )
           ),
-          const Expanded(
+          Expanded(
               child: ReuseableCard(
                   childCard: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Height",
-                            style: TextStyle(
-                                fontSize: 20.0
-                            ),
-                          ),
-                          Icon(
-                            Icons.female,
-                            size: 100,
-                            semanticLabel: "Male",
-                          ),
-                        ],
-                      )
+                      child: IconContent(icon: Icons.male, cardText: "Height")
                   ),
-                  colour: cardColour
+                  colour: inactiveCardColour
               ),
           ),
-          const Expanded(
+          Expanded(
               child: Row(
                 children: [
-                  ReuseableCard(
-                      childCard: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Weight",
-                                style: TextStyle(
-                                    fontSize: 20.0
-                                ),
-                              ),
-                              Icon(
-                                Icons.female,
-                                size: 100,
-                              ),
-                            ],
-                          )
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          _color == activeCardColour ?
+                          _color = inactiveCardColour : _color = activeCardColour;
+                        });
+                      },
+                      child: ReuseableCard(
+                          childCard: const Center(
+                              child: IconContent(icon: Icons.male, cardText: "MALE")
+                          ),
+                          colour: _color
                       ),
-                      colour: cardColour
+                    ),
                   ),
-                  ReuseableCard(
-                      childCard: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Height",
-                                style: TextStyle(
-                                    fontSize: 20.0
-                                ),
-                              ),
-                              Icon(
-                                Icons.female,
-                                size: 100,
-                              ),
-                            ],
-                          )
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          _color == activeCardColour ?
+                          _color = inactiveCardColour : _color = activeCardColour;
+                        });
+                      },
+                      child: ReuseableCard(
+                          childCard: const Center(
+                              child: IconContent(icon: Icons.male, cardText: "MALE")
+                          ),
+                          colour: _color
                       ),
-                      colour: cardColour
+                    ),
                   ),
                 ],
               )
@@ -125,64 +130,6 @@ class _InputPageState extends State<InputPage> {
             ),
           )
         ],
-      ),
-
-    );
-  }
-}
-
-class IconContent extends StatelessWidget {
-  const IconContent({
-    super.key,
-    required this.icon,
-    required this.cardText
-  });
-
-  final IconData icon;
-  final String cardText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          size: 100.0,
-        ),
-        Text(
-          cardText,
-          style: const TextStyle(
-              fontSize: 20.0,
-              color: Color(0xff8d8e98)
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class ReuseableCard extends StatelessWidget {
-
-  //constructor
-  const ReuseableCard({super.key,
-    required this.colour,
-    required this.childCard
-  });
-
-  final Color colour;
-  final Widget childCard;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: colour,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: childCard,
       ),
     );
   }
