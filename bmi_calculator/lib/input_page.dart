@@ -31,8 +31,8 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: (){
+                  child: ReuseableCard(
+                    onPress: (){
                       setState(() {
                         if(_femaleCardColour == activeCardColour){
                           _femaleCardColour = inactiveCardColour;
@@ -44,17 +44,15 @@ class _InputPageState extends State<InputPage> {
                         }
                       });
                     },
-                    child: ReuseableCard(
-                      childCard: const Center(
-                            child: IconContent(icon: Icons.male, cardText: "MALE")
-                        ),
-                      colour: _maleCardColour
-                    ),
+                    childCard: const Center(
+                          child: IconContent(icon: Icons.male, cardText: "MALE")
+                      ),
+                    colour: _maleCardColour
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: (){
+                  child: ReuseableCard(
+                    onPress: (){
                       setState(() {
                         if(_maleCardColour == activeCardColour){
                           _maleCardColour = inactiveCardColour;
@@ -66,12 +64,10 @@ class _InputPageState extends State<InputPage> {
                         }
                       });
                     },
-                    child: ReuseableCard(
-                      childCard: const Center(
-                          child: IconContent(icon: Icons.female, cardText: "FEMALE")
-                      ),
-                      colour: _femaleCardColour
+                    childCard: const Center(
+                        child: IconContent(icon: Icons.female, cardText: "FEMALE")
                     ),
+                    colour: _femaleCardColour
                   ),
                 ),
               ],
@@ -79,8 +75,11 @@ class _InputPageState extends State<InputPage> {
           ),
           Expanded(
             child: ReuseableCard(
-              childCard: Center(
-                  child: IconContent(icon: Icons.male, cardText: "Height")
+              onPress: (){
+
+              },
+              childCard: const Center(
+                  child: IconContent(icon: Icons.male, cardText: "MALE")
               ),
               colour: inactiveCardColour
             ),
@@ -89,33 +88,25 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: (){
-                      setState(() {
+                  child: ReuseableCard(
+                    onPress: (){
 
-                      });
                     },
-                    child: ReuseableCard(
-                        childCard: const Center(
-                            child: IconContent(icon: Icons.male, cardText: "MALE")
-                        ),
-                        colour: inactiveCardColour
+                    childCard: const Center(
+                        child: IconContent(icon: Icons.male, cardText: "MALE")
                     ),
+                    colour: inactiveCardColour
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: (){
-                      setState(() {
+                  child: ReuseableCard(
+                      onPress: (){
 
-                      });
-                    },
-                    child: ReuseableCard(
-                        childCard: const Center(
-                            child: IconContent(icon: Icons.male, cardText: "MALE")
-                        ),
-                        colour: inactiveCardColour
+                      },
+                    childCard: const Center(
+                        child: IconContent(icon: Icons.male, cardText: "MALE")
                     ),
+                    colour: inactiveCardColour
                   ),
                 ),
               ],
