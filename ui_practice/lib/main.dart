@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 void main(){
   runApp(
@@ -28,24 +29,63 @@ class UIPractice extends StatelessWidget {
             const Image(
                 image: NetworkImage('https://www.wildlensbyabrar.com/images/easyblog_articles/100/a1sx2_custom_DSC01640.jpg')
             ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Center(
-                  child: Column(
-                    children: [
-                      Text("Oeschinensee Lake Campground"),
-                      Text("Kandersteg, Switzerland")
-                    ],
+            const Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Center(
+                    child: Column(
+                      children: [
+                        Text("Oeschinensee Lake Campground"),
+                        Text("Kandersteg, Switzerland")
+                      ],
+                    ),
                   ),
+                  Icon(
+                    Icons.star,
+                    color: Colors.red,
+                  ),
+                  Text("41")
+                ],
+              ),
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    Icon(
+                      Icons.call,
+                      color: Colors.deepPurple,
+                    ),
+                    Text("Call")
+                  ],
                 ),
-                Icon(
-                  Icons.star,
-                  color: Colors.red,
+                Column(
+                  children: [
+                    Icon(
+                      Icons.route,
+                      color: Colors.deepPurple,
+                    ),
+                    Text("Route")
+                  ],
                 ),
-                Text("41")
+                Column(
+                  children: [
+                    Icon(
+                      Icons.share,
+                      color: Colors.deepPurple,
+                    ),
+                    Text("Share")
+                  ],
+                ),
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: Text("This is where the paragraph going to go"),
+            )
           ],
         ),
       ),
