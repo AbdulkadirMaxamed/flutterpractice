@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/styling.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,6 +27,7 @@ class _InputPageState extends State<InputPage> {
         title: const Text("BMI Calculator"),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
@@ -78,8 +80,19 @@ class _InputPageState extends State<InputPage> {
               onPress: (){
 
               },
-              childCard: const Center(
-                  child: IconContent(icon: Icons.male, cardText: "MALE")
+              childCard: Column(
+                children: [
+                  Text("Height", style: kTextStyling),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text("193", style: kNumberTextStyle,),
+                      Text("cm", style: kTextStyling)
+                    ],
+                  )
+                ],
               ),
               colour: inactiveCardColour
             ),
