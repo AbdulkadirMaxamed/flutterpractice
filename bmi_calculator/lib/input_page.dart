@@ -8,6 +8,11 @@ import 'reuseable_card.dart';
 const Color inactiveCardColour = Color(0xff151641);
 const Color activeCardColour = Color(0xff111328);
 
+//values
+double startingHeight = 100;
+int startingWeight = 60;
+int startingAge = 18;
+
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
 
@@ -88,10 +93,23 @@ class _InputPageState extends State<InputPage> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Text("193", style: kNumberTextStyle,),
-                      Text("cm", style: kTextStyling)
+                      Text(startingHeight.round().toString(), style: kNumberTextStyle),
+                      const Text("cm", style: kTextStyling)
                     ],
-                  )
+                  ),
+                  Slider.adaptive(
+                    value: startingHeight,
+                    max: 250,
+                    min: 50,
+                    onChanged: (double value){
+                      setState(() {
+                        startingHeight = value;
+                      });
+                    },
+                    inactiveColor: Colors.white,
+                    activeColor: Color(0xffeb1555),
+                    thumbColor: Color(0xffeb1555),
+                  ),
                 ],
               ),
               colour: inactiveCardColour
@@ -105,8 +123,28 @@ class _InputPageState extends State<InputPage> {
                     onPress: (){
 
                     },
-                    childCard: const Center(
-                        child: IconContent(icon: Icons.male, cardText: "MALE")
+                    childCard: Column(
+                      children: [
+                        const Text(
+                          "Weight",
+                          style: kTextStyling
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              startingWeight.toString(),
+                              style: kNumberTextStyle
+                            ),
+                            Text(
+                              "kg",
+                              style: kTextStyling,
+                            )
+                          ],
+                        )
+                      ],
                     ),
                     colour: inactiveCardColour
                   ),
@@ -116,8 +154,32 @@ class _InputPageState extends State<InputPage> {
                       onPress: (){
 
                       },
-                    childCard: const Center(
-                        child: IconContent(icon: Icons.male, cardText: "MALE")
+                    childCard: Column(
+                      children: [
+                        Text("Age", style: kTextStyling),
+                        Text(startingAge.toString(), style: kNumberTextStyle),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                                onPressed: (){
+
+                                },
+                                child: const Icon(
+                                  Icons.add_circle
+                                )
+                            ),
+                            TextButton(
+                                onPressed: (){
+
+                                },
+                                child: const Icon(
+                                    Icons.remove_circle
+                                )
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                     colour: inactiveCardColour
                   ),
