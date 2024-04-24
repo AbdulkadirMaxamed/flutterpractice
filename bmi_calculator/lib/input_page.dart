@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'icon_content.dart';
-import 'reuseable_card.dart';
+import 'reusable_card.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 const Color inactiveCardColour = Color(0xff151641);
 const Color activeCardColour = Color(0xff111328);
+//0xff4c4f5e
 
 //values
 double startingHeight = 100;
@@ -38,7 +40,7 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: ReuseableCard(
+                  child: ReusableCard(
                     onPress: (){
                       setState(() {
                         if(_femaleCardColour == activeCardColour){
@@ -58,7 +60,7 @@ class _InputPageState extends State<InputPage> {
                   ),
                 ),
                 Expanded(
-                  child: ReuseableCard(
+                  child: ReusableCard(
                     onPress: (){
                       setState(() {
                         if(_maleCardColour == activeCardColour){
@@ -81,13 +83,13 @@ class _InputPageState extends State<InputPage> {
             )
           ),
           Expanded(
-            child: ReuseableCard(
+            child: ReusableCard(
               onPress: (){
 
               },
               childCard: Column(
                 children: [
-                  Text("Height", style: kTextStyling),
+                  const Text("Height", style: kTextStyling),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -103,12 +105,12 @@ class _InputPageState extends State<InputPage> {
                     min: 50,
                     onChanged: (double value){
                       setState(() {
-                        startingHeight = value;
+                        startingHeight = value.roundToDouble();
                       });
                     },
                     inactiveColor: Colors.white,
-                    activeColor: Color(0xffeb1555),
-                    thumbColor: Color(0xffeb1555),
+                    activeColor: const Color(0xffeb1555),
+                    thumbColor: const Color(0xffeb1555),
                   ),
                 ],
               ),
@@ -119,7 +121,7 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: ReuseableCard(
+                  child: ReusableCard(
                     onPress: (){
 
                     },
@@ -138,45 +140,66 @@ class _InputPageState extends State<InputPage> {
                               startingWeight.toString(),
                               style: kNumberTextStyle
                             ),
-                            Text(
+                            const Text(
                               "kg",
                               style: kTextStyling,
                             )
                           ],
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            RoundedIconButton(
+                              icon: Icons.remove,
+                              onPress: (){
+                                setState(() {
+                                  startingWeight--;
+                                });
+                              },
+                            ),
+                            RoundedIconButton(
+                              icon: Icons.add,
+                              onPress: (){
+                                setState(() {
+                                  startingWeight++;
+                                });
+                              },
+                            )
+                          ],
+                        ),
                       ],
                     ),
                     colour: inactiveCardColour
                   ),
                 ),
                 Expanded(
-                  child: ReuseableCard(
+                  child: ReusableCard(
                       onPress: (){
 
                       },
                     childCard: Column(
                       children: [
-                        Text("Age", style: kTextStyling),
+                        const Text("Age", style: kTextStyling),
                         Text(startingAge.toString(), style: kNumberTextStyle),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            TextButton(
-                                onPressed: (){
-
-                                },
-                                child: const Icon(
-                                  Icons.add_circle
-                                )
+                            RoundedIconButton(
+                              icon: Icons.remove,
+                              onPress: (){
+                                setState(() {
+                                  startingAge--;
+                                });
+                              },
                             ),
-                            TextButton(
-                                onPressed: (){
-
-                                },
-                                child: const Icon(
-                                    Icons.remove_circle
-                                )
-                            ),
+                            RoundedIconButton(
+                              icon: Icons.add,
+                              onPress: (){
+                                setState(() {
+                                  startingAge++;
+                                });
+                              },
+                            )
                           ],
                         )
                       ],
@@ -188,13 +211,17 @@ class _InputPageState extends State<InputPage> {
             )
           ),
           Container(
-            color: Color(0xffeb1555),
-            margin: EdgeInsets.only(top: 10.0),
+            color: const Color(0xffeb1555),
+            margin: const EdgeInsets.only(top: 10.0),
             width: double.infinity,
             height: 80.0,
             child: TextButton(
               onPressed: (){
-                null;
+                Alert(
+                    context: context,
+                    title: "$startingHeight $startingWeight $startingAge",
+                    desc: "Flutter is awesome."
+                ).show();
               },
               child: const Text(
                   "Calculate",
@@ -207,6 +234,35 @@ class _InputPageState extends State<InputPage> {
           )
         ],
       ),
+    );
+  }
+}
+
+//creating a custom button using RawMaterialButton
+class RoundedIconButton extends StatelessWidget {
+  const RoundedIconButton({
+    super.key,
+    required this.icon,
+    required this.onPress
+  });
+
+  final IconData icon;
+  final VoidCallback onPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: onPress,
+      elevation: 6,
+      constraints: const BoxConstraints.tightFor(
+        height: 56,
+        width: 56
+      ),
+      shape: const CircleBorder(),
+      fillColor: activeCardColour,
+      child: Icon(
+          icon
+      )
     );
   }
 }
