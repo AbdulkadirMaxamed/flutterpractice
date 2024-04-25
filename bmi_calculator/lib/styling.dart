@@ -5,7 +5,17 @@ const kTextStyling = TextStyle(
   color: Color(0xff8d8e98)
 );
 
+const kHeaderStyling = TextStyle(
+    fontSize: 35.0,
+    color: Color(0xffffffff)
+);
+
 const kNumberTextStyle = TextStyle(
   fontSize: 50.0,
   fontWeight: FontWeight.w900
 );
+
+const kBackgroundColour = Color(0xff0a0e21);
+
+const Color inactiveCardColour = Color(0xff151641);
+const Color activeCardColour = Color(0xff111328);

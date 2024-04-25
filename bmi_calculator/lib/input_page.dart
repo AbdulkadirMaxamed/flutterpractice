@@ -1,13 +1,13 @@
+import 'package:bmi_calculator/calculation.dart';
 import 'package:bmi_calculator/styling.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'icon_content.dart';
 import 'reusable_card.dart';
+import 'calculation.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-const Color inactiveCardColour = Color(0xff151641);
-const Color activeCardColour = Color(0xff111328);
 //0xff4c4f5e
 
 //values
@@ -217,11 +217,11 @@ class _InputPageState extends State<InputPage> {
             height: 80.0,
             child: TextButton(
               onPressed: (){
-                Alert(
-                    context: context,
-                    title: "$startingHeight $startingWeight $startingAge",
-                    desc: "Flutter is awesome."
-                ).show();
+                double height = startingHeight/100;
+                double total = startingWeight/(height*height);
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return CalculationPage(calculation: total.roundToDouble());
+                }));
               },
               child: const Text(
                   "Calculate",
