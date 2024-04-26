@@ -5,15 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'icon_content.dart';
 import 'reusable_card.dart';
-import 'calculation.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
-//0xff4c4f5e
-
-//values
-double startingHeight = 100;
-int startingWeight = 60;
-int startingAge = 18;
+//starting values
+double startingHeight = 150;
+int startingWeight = 65;
+int startingAge = 20;
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -84,9 +80,7 @@ class _InputPageState extends State<InputPage> {
           ),
           Expanded(
             child: ReusableCard(
-              onPress: (){
-
-              },
+              onPress: null,
               childCard: Column(
                 children: [
                   const Text("Height", style: kTextStyling),
@@ -122,9 +116,7 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: ReusableCard(
-                    onPress: (){
-
-                    },
+                    onPress: null,
                     childCard: Column(
                       children: [
                         const Text(
@@ -174,9 +166,7 @@ class _InputPageState extends State<InputPage> {
                 ),
                 Expanded(
                   child: ReusableCard(
-                      onPress: (){
-
-                      },
+                    onPress: null,
                     childCard: Column(
                       children: [
                         const Text("Age", style: kTextStyling),
@@ -210,26 +200,28 @@ class _InputPageState extends State<InputPage> {
               ],
             )
           ),
-          Container(
-            color: const Color(0xffeb1555),
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: 80.0,
-            child: TextButton(
-              onPressed: (){
-                double height = startingHeight/100;
-                double total = startingWeight/(height*height);
-                Navigator.push(context, MaterialPageRoute(builder: (context){
-                  return CalculationPage(calculation: total.roundToDouble());
-                }));
-              },
-              child: const Text(
-                  "Calculate",
-                style: TextStyle(
-                  fontSize: 25.0,
-                  color: Colors.white
+          GestureDetector(
+            onTap: (){
+              double height = startingHeight/100;
+              double total = startingWeight/(height*height);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return CalculationPage(calculation: total.roundToDouble());
+              }));
+            },
+            child: Container(
+              color: const Color(0xffeb1555),
+              margin: const EdgeInsets.only(top: 10.0),
+              width: double.infinity,
+              height: 80.0,
+              child: const Center(
+                child: Text(
+                    "Calculate",
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.white
+                  ),
                 ),
-              )
+              ),
             ),
           )
         ],

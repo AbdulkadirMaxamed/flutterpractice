@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/calculation.dart';
 import 'package:bmi_calculator/styling.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,11 @@ class BMICalculator extends StatelessWidget {
         ),
         scaffoldBackgroundColor: kBackgroundColour,
       ),
-      home: InputPage(),
+      // home: InputPage(),
+      initialRoute: "/",
+      routes: {
+        '/': (context) => const InputPage(),
+      },
     );
   }
 }

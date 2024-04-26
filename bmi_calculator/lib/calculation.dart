@@ -46,6 +46,26 @@ class CalculationPage extends StatelessWidget {
                         calculation.toString(),
                         style: kHeaderStyling
                       )
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      color: const Color(0xffeb1555),
+                      margin: const EdgeInsets.only(top: 10.0),
+                      width: double.infinity,
+                      height: 80.0,
+                      child: const Center(
+                        child: Text(
+                          "Restart",
+                          style: TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.white
+                          ),
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
