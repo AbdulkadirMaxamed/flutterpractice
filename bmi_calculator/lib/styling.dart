@@ -15,6 +15,12 @@ const kNumberTextStyle = TextStyle(
   fontWeight: FontWeight.w900
 );
 
+const kButtonTextStyle = TextStyle(
+  fontSize: 40.0,
+  fontWeight: FontWeight.bold,
+  color: CupertinoColors.white
+);
+
 const kBackgroundColour = Color(0xff0a0e21);
 
 const Color inactiveCardColour = Color(0xff151641);
