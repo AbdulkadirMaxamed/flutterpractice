@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 
 const kTextStyling = TextStyle(
@@ -19,6 +21,16 @@ const kButtonTextStyle = TextStyle(
   fontSize: 40.0,
   fontWeight: FontWeight.bold,
   color: CupertinoColors.white
+);
+
+const kStatusStyling = TextStyle(
+    fontSize: 35.0,
+    color: Color(0xff00D100)
+);
+
+const kConclusionStyling = TextStyle(
+    fontSize: 25.0,
+    color: Color(0xffffffff)
 );
 
 const kBackgroundColour = Color(0xff0a0e21);

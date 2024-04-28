@@ -3,6 +3,7 @@ import 'package:bmi_calculator/styling.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'icon_content.dart';
 import 'reusable_card.dart';
 
@@ -202,11 +203,22 @@ class _InputPageState extends State<InputPage> {
           ),
           GestureDetector(
             onTap: (){
-              double height = startingHeight/100;
-              double total = startingWeight/(height*height);
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return CalculationPage(calculation: total.roundToDouble());
-              }));
+              if(_maleCardColour==inactiveCardColour || _femaleCardColour==inactiveCardColour){
+                Alert(
+                  context: context,
+                  style: const AlertStyle(
+                    titleStyle: kHeaderStyling
+                  ),
+                  title: 'Error',
+                  desc: 'Cannot calculate without selecting a gender'
+                ).show();
+              }else{
+                double height = startingHeight/100;
+                double total = startingWeight/(height*height);
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return CalculationPage(calculation: total.roundToDouble());
+                }));
+              }
             },
             child: Container(
               color: const Color(0xffeb1555),
