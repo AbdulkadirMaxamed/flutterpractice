@@ -23,6 +23,7 @@ class _InputPageState extends State<InputPage> {
 
   Color _maleCardColour = inactiveCardColour;
   Color _femaleCardColour = inactiveCardColour;
+  bool cardState = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +41,19 @@ class _InputPageState extends State<InputPage> {
                   child: ReusableCard(
                     onPress: (){
                       setState(() {
-                        if(_femaleCardColour == activeCardColour){
-                          _femaleCardColour = inactiveCardColour;
-                          _maleCardColour == activeCardColour ?
-                          _maleCardColour = inactiveCardColour : _maleCardColour = activeCardColour;
+                        cardState=true;
+                        if(cardState==false){
+                          _maleCardColour=inactiveCardColour;
+                          _femaleCardColour=inactiveCardColour;
                         }else{
-                          _maleCardColour == activeCardColour ?
-                          _maleCardColour = inactiveCardColour : _maleCardColour = activeCardColour;
+                          if(_femaleCardColour == activeCardColour){
+                            _femaleCardColour = inactiveCardColour;
+                            _maleCardColour == activeCardColour ?
+                            _maleCardColour = inactiveCardColour : _maleCardColour = activeCardColour;
+                          }else{
+                            _maleCardColour == activeCardColour ?
+                            _maleCardColour = inactiveCardColour : _maleCardColour = activeCardColour;
+                          }
                         }
                       });
                     },
@@ -60,13 +67,19 @@ class _InputPageState extends State<InputPage> {
                   child: ReusableCard(
                     onPress: (){
                       setState(() {
-                        if(_maleCardColour == activeCardColour){
-                          _maleCardColour = inactiveCardColour;
-                          _femaleCardColour == activeCardColour ?
-                          _femaleCardColour = inactiveCardColour : _femaleCardColour = activeCardColour;
+                        cardState=true;
+                        if(cardState==false){
+                          _maleCardColour=inactiveCardColour;
+                          _femaleCardColour=inactiveCardColour;
                         }else{
-                          _femaleCardColour == activeCardColour ?
-                          _femaleCardColour = inactiveCardColour : _femaleCardColour = activeCardColour;
+                          if(_maleCardColour == activeCardColour){
+                            _maleCardColour = inactiveCardColour;
+                            _femaleCardColour == activeCardColour ?
+                            _femaleCardColour = inactiveCardColour : _femaleCardColour = activeCardColour;
+                          }else{
+                            _femaleCardColour == activeCardColour ?
+                            _femaleCardColour = inactiveCardColour : _femaleCardColour = activeCardColour;
+                          }
                         }
                       });
                     },
@@ -203,7 +216,7 @@ class _InputPageState extends State<InputPage> {
           ),
           GestureDetector(
             onTap: (){
-              if(_maleCardColour==inactiveCardColour || _femaleCardColour==inactiveCardColour){
+              if(cardState==false){
                 Alert(
                   context: context,
                   style: const AlertStyle(
@@ -213,6 +226,11 @@ class _InputPageState extends State<InputPage> {
                   desc: 'Cannot calculate without selecting a gender'
                 ).show();
               }else{
+                setState(() {
+                  _maleCardColour=inactiveCardColour;
+                  _femaleCardColour=inactiveCardColour;
+                  cardState=false;
+                });
                 double height = startingHeight/100;
                 double total = startingWeight/(height*height);
                 Navigator.push(context, MaterialPageRoute(builder: (context){
