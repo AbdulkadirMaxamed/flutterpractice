@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'location.dart';
-<<<<<<< HEAD
 
-=======
->>>>>>> 04c7d9fbc46202afecab4d964e97bd9f70ef8a6a
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -14,7 +11,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-<<<<<<< HEAD
+
   @override
   void initState() {
     // TODO: implement initState
@@ -27,21 +24,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await location.getCurrentLocation();
     print(location.latitude);
     print(location.longitude);
-=======
 
-  void getLocation() async{
-    try{
-      Location location =  Location();
-      await location.getCurrentLocation();
-      print(location.latitude);
-      print(location.longitude);
-      print(location.locationPermission);
-    }catch(e){
-      print(e);
-    }
-
-
->>>>>>> 04c7d9fbc46202afecab4d964e97bd9f70ef8a6a
   }
 
   @override
@@ -50,7 +33,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-
+            getLocation();
           },
           child: const Text('Get Location'),
         ),
