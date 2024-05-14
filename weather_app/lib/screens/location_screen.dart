@@ -26,13 +26,22 @@ class _LocationScreenState extends State<LocationScreen> {
     super.initState();
   }
 
-  dynamic updateUI(weatherData){
+  dynamic updateUI(weatherData) async{
     WeatherModel weathericon = WeatherModel();
-    temp = weatherData['main']['temp'].toInt();
-    city = weatherData['name'];
-    condition = weatherData['weather'][0]['id'];
-    icon = weathericon.getWeatherIcon(condition);
-    message = weathericon.getMessage(temp);
+    if(weatherData==null){
+      temp = 0;
+      city = 'Unknown';
+      icon = '🤷‍';
+      message = 'Error finding weather info';
+      return;
+    }
+    setState(() {
+      temp = weatherData['main']['temp'].toInt();
+      city = weatherData['name'];
+      condition = weatherData['weather'][0]['id'];
+      icon = weathericon.getWeatherIcon(condition);
+      message = weathericon.getMessage(temp);
+    });
   }
 
   @override
@@ -57,7 +66,10 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async{
+                      dynamic weatherData = await WeatherModel().getLocation('Agadir');
+                      updateUI(weatherData);
+                    },
                     child: const Icon(
                       Icons.near_me,
                       size: 50.0,

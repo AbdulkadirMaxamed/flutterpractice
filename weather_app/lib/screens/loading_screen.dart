@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/networking.dart';
+import 'package:weather_app/services/weather.dart';
 import 'location.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
@@ -26,20 +27,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getLocation() async{
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
 
-    NetworkHelper networkHelper = NetworkHelper('Los angeles');
-
-    networkHelper.getData();
-    var weatherData = await networkHelper.getData();
-    print(weatherData);
+    try{
+      WeatherModel weatherModel = WeatherModel();
+      var weatherData = await weatherModel.getLocation('Manchester');
 
 
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+        return LocationScreen(weatherData: weatherData,);
+      }));
+    }catch(e){
 
-    Navigator.push(context, MaterialPageRoute(builder: (context){
-      return LocationScreen(weatherData: weatherData,);
-    }));
+    }
+
   }
 
   @override

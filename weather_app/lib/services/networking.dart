@@ -23,9 +23,6 @@ class NetworkHelper{
     }else{
       print("failed");
     }
-
-
-
   }
 
 }
