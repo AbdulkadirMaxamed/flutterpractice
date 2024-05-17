@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/screens/city_screen.dart';
+import 'package:weather_app/services/networking.dart';
 import 'package:weather_app/services/weather.dart';
 import 'package:weather_app/utilities/constants.dart';
 
@@ -25,6 +26,17 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     updateUI(widget.weatherData);
     super.initState();
+  }
+
+  Future<dynamic> getNewLocation(String city) async{
+    WeatherModel weatherModel = WeatherModel();
+    var newCity = await weatherModel.getLocation(city);
+    if(newCity=='failed'){
+      updateUI(null);
+    }else{
+      updateUI(newCity);
+    }
+
   }
 
   dynamic updateUI(weatherData) async{
@@ -77,10 +89,14 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                    onPressed: () async {
+                      var typedName = await Navigator.push(context, MaterialPageRoute(builder: (context){
                         return const CityScreen();
                       }));
+                      if(typedName.isNotEmpty){
+                        print(typedName);
+                        getNewLocation(typedName);
+                      }
                     },
                     child: const Icon(
                       Icons.location_city,

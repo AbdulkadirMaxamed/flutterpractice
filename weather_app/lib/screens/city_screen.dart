@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:weather_app/screens/loading_screen.dart';
+import 'package:weather_app/screens/location_screen.dart';
+import 'package:weather_app/services/weather.dart';
 import 'package:weather_app/utilities/constants.dart';
 
 
@@ -12,6 +15,17 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+
+  String cityName='London';
+
+  void getNewLocation(city) async{
+    WeatherModel weatherModel = WeatherModel();
+    var weatherData = await weatherModel.getLocation(city);
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return LocationScreen(weatherData: weatherData);
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +43,9 @@ class _CityScreenState extends State<CityScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: const Icon(
                     Icons.arrow_back_ios,
                     size: 50.0,
@@ -44,12 +60,18 @@ class _CityScreenState extends State<CityScreen> {
                   ),
                   decoration: kTextFieldDecoration,
                   onChanged: (value){
-                    print(value);
+                    if(value.isNotEmpty){
+                      setState(() {
+                        cityName=value;
+                      });
+                    }
                   },
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, cityName);
+                },
                 child: const Text(
                   'Get Weather',
                   style: kButtonTextStyle,
