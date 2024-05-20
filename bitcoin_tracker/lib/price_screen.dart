@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'coin_data.dart';
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -6,7 +7,38 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  String? currency;
+  String? currency = 'GBP';
+
+
+
+  // dynamic getListofCurrencies(){
+  //   final List<Widget> children = [];
+  //   for (String currencies in currenciesList){
+  //     children.add(
+  //         DropdownMenuItem(
+  //             value: currencies,
+  //             child: Text(currencies)
+  //         )
+  //     );
+  //   }
+  //   return children;
+  // }
+
+
+
+  List<DropdownMenuItem<String>> getListofCurrencies(){
+    List<DropdownMenuItem<String>> children = [];
+    for(String currency in currenciesList){
+      var newItem =
+        DropdownMenuItem(
+          value: currency,
+          child: Text(currency)
+      );
+
+      children.add(newItem);
+    }
+    return children;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +61,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? $currency',
+                  '1 BTC = $currency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
@@ -45,22 +77,10 @@ class _PriceScreenState extends State<PriceScreen> {
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
             child: DropdownButton<String>(
-              value: currency ?? 'GBP',
-              items: [
-                DropdownMenuItem(
-                    child: Text('USD'),
-                    value: 'USD'
-                ),
-                DropdownMenuItem(
-                    child: Text('EUR'),
-                    value: 'EUR'
-                ),
-                DropdownMenuItem(
-                    child: Text('GBP'),
-                    value: 'GBP'
-                ),
-              ],
+              value: currency,
+              items: getListofCurrencies(),
               onChanged: (value){
+                getListofCurrencies();
                 setState(() {
                   currency=value;
                 });
