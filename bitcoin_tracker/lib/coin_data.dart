@@ -40,7 +40,7 @@ class CoinData {
 
     //queryParam holds api key
     var queryParam = {
-      'apikey':'BBBC82D0-7F86-42C1-BF75-BD2BBE7C704E'
+      'apikey':''
     };
     var url = Uri.https('rest.coinapi.io', path, queryParam);
     var response = await http.get(url);

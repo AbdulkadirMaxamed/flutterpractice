@@ -12,6 +12,9 @@ class _PriceScreenState extends State<PriceScreen> {
   String currency = 'GBP';
   double currencyTotal = 0;
 
+  //need to fix this issue
+  //cant render page with a future so it breaks
+  //but need the page to render with the new currency amount!
   @override
   void initState()async {
     // TODO: implement initState
