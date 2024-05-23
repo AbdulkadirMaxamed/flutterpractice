@@ -10,6 +10,23 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String currency = 'GBP';
+  double currencyTotal = 0;
+
+  @override
+  void initState()async {
+    // TODO: implement initState
+    super.initState();
+    currencyTotal = await getCurrencyAmount(currency);
+  }
+
+  Future<double> getCurrencyAmount(String currency)async{
+    CoinData coinData = CoinData();
+    dynamic currencyData = await coinData.getData(currency);
+    // print(currencyData['asset_id_base']);
+    currencyTotal = currencyData['rate'].toDouble();
+    return currencyData['rate'].toDouble();
+  }
+
 
   DropdownButton AndroidPicker(){
     List<DropdownMenuItem<String>> children = [];
@@ -26,6 +43,7 @@ class _PriceScreenState extends State<PriceScreen> {
       value: currency,
       items: children,
       onChanged: (value){
+        getCurrencyAmount(currency);
         setState(() {
           currency=value.toString();
         });
@@ -46,6 +64,7 @@ class _PriceScreenState extends State<PriceScreen> {
       itemExtent: 32.0,
       children: children,
       onSelectedItemChanged: (value){
+        getCurrencyAmount(currency);
         setState(() {
           currency=currenciesList[value];
         });
@@ -74,7 +93,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $currency',
+                  '1 BTC = $currencyTotal $currency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
@@ -83,7 +102,11 @@ class _PriceScreenState extends State<PriceScreen> {
                 ),
               ),
             ),
-          ),
+          ),TextButton(
+              onPressed: (){
+                getCurrencyAmount(currency);
+              },
+              child: Text('Press')),
           Container(
             height: 150.0,
             alignment: Alignment.center,
