@@ -16,10 +16,21 @@ class _PriceScreenState extends State<PriceScreen> {
   //cant render page with a future so it breaks
   //but need the page to render with the new currency amount!
   @override
-  void initState()async{
+  void initState(){
     // TODO: implement initState
     super.initState();
-    currencyTotal = await getCurrencyAmount(currency);
+    updateUI();
+  }
+
+   void updateUI()async{
+    try{
+      double total = await getCurrencyAmount(currency);
+      setState(() {
+        currencyTotal = total;
+      });
+    }catch(e){
+      print(e);
+    }
   }
 
   Future<double> getCurrencyAmount(String? currency)async{
@@ -46,9 +57,7 @@ class _PriceScreenState extends State<PriceScreen> {
       value: currency,
       items: children,
       onChanged: (value) async{
-        print(value);
         double rate = await getCurrencyAmount(value);
-        print(rate);
         setState(() {
           currency=value.toString();
           currencyTotal = rate;
@@ -69,14 +78,17 @@ class _PriceScreenState extends State<PriceScreen> {
     return CupertinoPicker(
       itemExtent: 32.0,
       children: children,
-      onSelectedItemChanged: (value){
-        setState(() async{
-          // currencyTotal = await getCurrencyAmount(currency);
+      onSelectedItemChanged: (value)async{
+        double rate = await getCurrencyAmount(currenciesList[value]);
+        setState(() {
           currency=currenciesList[value];
+          currencyTotal = rate;
         });
       },
     );
   }
+
+  //TODO: need to adjust the value for each currency
 
   @override
   Widget build(BuildContext context) {
@@ -87,42 +99,39 @@ class _PriceScreenState extends State<PriceScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = ${currencyTotal.roundToDouble()} $currency',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
+        children: [
+          for(String coin in cryptoList)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+              child: Card(
+                color: Colors.lightBlueAccent,
+                elevation: 5.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                  child: Text(
+                    '1 $coin = ${currencyTotal.roundToDouble()} $currency',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),TextButton(
-              onPressed: (){
-                getCurrencyAmount(currency);
-              },
-              child: Text('Press')),
           Container(
             height: 150.0,
             alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: 30.0),
+            padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: Platform.isIOS ? IOSPicker() : AndroidPicker()
+            child: IOSPicker()
           ),
         ],
       ),
     );
   }
 }
-
