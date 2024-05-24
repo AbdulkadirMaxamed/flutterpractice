@@ -16,18 +16,18 @@ class _PriceScreenState extends State<PriceScreen> {
   //cant render page with a future so it breaks
   //but need the page to render with the new currency amount!
   @override
-  void initState()async {
+  void initState()async{
     // TODO: implement initState
     super.initState();
     currencyTotal = await getCurrencyAmount(currency);
   }
 
-  Future<double> getCurrencyAmount(String currency)async{
+  Future<double> getCurrencyAmount(String? currency)async{
     CoinData coinData = CoinData();
     dynamic currencyData = await coinData.getData(currency);
     // print(currencyData['asset_id_base']);
-    currencyTotal = currencyData['rate'].toDouble();
-    return currencyData['rate'].toDouble();
+    double total = currencyData['rate'].toDouble();
+    return total;
   }
 
 
@@ -45,10 +45,13 @@ class _PriceScreenState extends State<PriceScreen> {
     return DropdownButton<String>(
       value: currency,
       items: children,
-      onChanged: (value){
-        getCurrencyAmount(currency);
+      onChanged: (value) async{
+        print(value);
+        double rate = await getCurrencyAmount(value);
+        print(rate);
         setState(() {
           currency=value.toString();
+          currencyTotal = rate;
         });
       },
     );
@@ -67,8 +70,8 @@ class _PriceScreenState extends State<PriceScreen> {
       itemExtent: 32.0,
       children: children,
       onSelectedItemChanged: (value){
-        getCurrencyAmount(currency);
-        setState(() {
+        setState(() async{
+          // currencyTotal = await getCurrencyAmount(currency);
           currency=currenciesList[value];
         });
       },
@@ -96,7 +99,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = $currencyTotal $currency',
+                  '1 BTC = ${currencyTotal.roundToDouble()} $currency',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
