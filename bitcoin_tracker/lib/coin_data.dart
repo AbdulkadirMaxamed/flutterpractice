@@ -34,9 +34,9 @@ const List<String> cryptoList = [
 
 class CoinData {
 
-  Future getData(String? currency)async{
+  Future getData(String? coin, String? currency)async{
     //setup path to get coin data from
-    var path = '/v1/exchangerate/BTC/$currency';
+    var path = '/v1/exchangerate/$coin/$currency';
 
     //queryParam holds api key
     var queryParam = {
