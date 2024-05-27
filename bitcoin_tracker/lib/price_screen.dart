@@ -12,8 +12,8 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String currency = 'GBP';
-  String initialCoin = 'ETH';
-  double currencyTotal = 0;
+  bool isStopped = true;
+  List<Padding> childrenList = [];
 
   //need to fix this issue
   //cant render page with a future so it breaks
@@ -21,42 +21,27 @@ class _PriceScreenState extends State<PriceScreen> {
   @override
   void initState(){
     super.initState();
-    updateUI();
+    getCurrencyAmount(currency);
   }
 
-   void updateUI()async{
-    //TODO: might need to work on efficiency of this initial load theres a second where it does not show currency value
-    // try{
-    //   double total = await getCurrencyAmount(currency);
-    //   setState(() {
-    //     currencyTotal = total;
-    //   });
-    // }catch(e){
-    //   print(e);
-    // }
-  }
-
-  Future<double> getCurrencyAmount(String? coin, String? currency)async{
+  getCurrencyAmount(String? currency)async{
+    childrenList=[];
+    print(currency);
     CoinData coinData = CoinData();
-    dynamic currencyData = await coinData.getData(coin, currency);
-    // print(currencyData['asset_id_base']);
-    double total = currencyData['rate'].toDouble();
-    return total;
+    dynamic currencyData = await coinData.getData(currency);
+    for(dynamic coin in currencyData){
+      // print(coin);
+      // print(coin['rate']);
+      addWidget(coin['asset_id_base'], coin['rate'], coin['asset_id_quote']);
+    }
+    // print(childrenList);
   }
 
-  // Future<void> updateCurrencies(String coin)async{
-  //   double amount = await getCurrencyAmount(coin, currency);
-  //   setState(() {
-  //     initialCoin = coin;
-  //     currencyTotal = amount;
-  //   });
-  // }
-
-  List<Padding> addWidget(){
-    // returnList();
-    List<Padding> children = [];
-    for(String coins in cryptoList){
-      children.add(
+  List<Padding> addWidget(String coin, double currencyNum, String currentCurrency){
+    // currencyTotal = returnCurrencyData(coin);
+    // print(currencyTotal);
+    setState(() {
+      childrenList.add(
         Padding(
           padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
           child: Card(
@@ -69,7 +54,7 @@ class _PriceScreenState extends State<PriceScreen> {
               padding:
               const EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
               child: Text(
-                '1 $coins = ${currencyTotal.roundToDouble()} $currency',
+                '1 $coin = ${currencyNum.roundToDouble()} $currentCurrency',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 20.0,
@@ -80,8 +65,8 @@ class _PriceScreenState extends State<PriceScreen> {
           ),
         ),
       );
-    }
-    return children;
+    });
+    return childrenList;
   }
 
   DropdownButton androidPicker(){
@@ -99,16 +84,16 @@ class _PriceScreenState extends State<PriceScreen> {
       value: currency,
       items: children,
       onChanged: (value) async{
-        double rate = await getCurrencyAmount(initialCoin, value);
+        childrenList = [];
+        await getCurrencyAmount(value);
         setState(() {
           currency=value.toString();
-          currencyTotal = rate;
         });
       },
     );
   }
 
-  CupertinoPicker iosPicker(){
+  NotificationListener iosPicker(){
 
     List<Text> children = [];
     for(String currency in currenciesList){
@@ -117,16 +102,37 @@ class _PriceScreenState extends State<PriceScreen> {
       );
     }
 
-    return CupertinoPicker(
-      itemExtent: 32.0,
-      children: children,
-      onSelectedItemChanged: (value)async{
-        // double rate = await getCurrencyAmount(currenciesList[value]);
-        // setState(() {
-        //   currency=currenciesList[value];
-        //   currencyTotal = rate;
-        // });
+    return NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification){
+        if (scrollNotification is ScrollEndNotification) {
+
+          //Will only update when user has stopped scrolling in picker.
+          print('this item is centered $isStopped');
+          isStopped=true;
+
+          print(scrollNotification);
+
+          return true;
+        }else{
+          print('running $isStopped');
+          isStopped=false;
+          return false;
+        }
       },
+      child: CupertinoPicker(
+        itemExtent: 32.0,
+        scrollController: FixedExtentScrollController(initialItem: 5),
+        onSelectedItemChanged:(int index)async{
+          //this runs before scrollnotification stops
+          print(isStopped);
+          if(isStopped==true){
+            print('we are here $isStopped');
+            childrenList=[];
+            await getCurrencyAmount(currenciesList[index]);
+          }
+        },
+        children: children,
+      ),
     );
   }
 
@@ -146,7 +152,7 @@ class _PriceScreenState extends State<PriceScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
-                children: addWidget(),
+                children: childrenList,
               )
             ],
           ),
@@ -155,7 +161,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: Platform.isIOS ? iosPicker() : androidPicker()
+            child: iosPicker()
           ),
         ],
       ),

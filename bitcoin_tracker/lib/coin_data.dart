@@ -29,30 +29,36 @@ const List<String> currenciesList = [
 const List<String> cryptoList = [
   'BTC',
   'ETH',
-  'LTC',
+  // 'LTC',
+  // 'SOL',
+  // 'IMX'
 ];
 
 class CoinData {
 
-  Future getData(String? coin, String? currency)async{
+  Future<dynamic> getData(String? currency)async{
     //setup path to get coin data from
-    var path = '/v1/exchangerate/$coin/$currency';
+    List<dynamic> cryptoData = [];
+    for(String coins in cryptoList){
+      var path = '/v1/exchangerate/$coins/$currency';
 
-    //queryParam holds api key
-    var queryParam = {
-      'apikey':''
-    };
-    var url = Uri.https('rest.coinapi.io', path, queryParam);
-    var response = await http.get(url);
+      //queryParam holds api key
+      var queryParam = {
+        'apikey':''
+      };
+      var url = Uri.https('rest.coinapi.io', path, queryParam);
+      var response = await http.get(url);
 
-    print(response.statusCode);
-    if(response.statusCode==200){
-      dynamic data = jsonDecode(response.body);
-      print(url);
-      print(data['asset_id_quote']);
-      print(data['rate']);
-      return data;
+      if(response.statusCode==200){
+        dynamic data = jsonDecode(response.body);
+        // print(url);
+        // print(data);
+        // print(data['rate']);
+        cryptoData.add(data);
+      }
     }
+    // print(cryptoData);
+    return cryptoData;
   }
 
 }
