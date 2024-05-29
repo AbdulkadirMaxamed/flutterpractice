@@ -105,30 +105,24 @@ class _PriceScreenState extends State<PriceScreen> {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification){
         if (scrollNotification is ScrollEndNotification) {
-
-          //Will only update when user has stopped scrolling in picker.
-          print('this item is centered $isStopped');
-          isStopped=true;
-
-          print(scrollNotification);
-
-          return true;
-        }else{
-          print('running $isStopped');
-          isStopped=false;
-          return false;
+          // Set isStopped to true when scrolling stops
+          isStopped = true;
+        } else {
+          // Set isStopped to false when scrolling starts or continues
+          isStopped = false;
         }
+        return true;
       },
       child: CupertinoPicker(
         itemExtent: 32.0,
         scrollController: FixedExtentScrollController(initialItem: 5),
         onSelectedItemChanged:(int index)async{
           //this runs before scrollnotification stops
+
+          print()
           print(isStopped);
-          if(isStopped==true){
-            print('we are here $isStopped');
-            childrenList=[];
-            await getCurrencyAmount(currenciesList[index]);
+          if(isStopped==false){
+            print('selector has stopped at $index');
           }
         },
         children: children,
