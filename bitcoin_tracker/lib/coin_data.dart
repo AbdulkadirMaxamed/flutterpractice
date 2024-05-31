@@ -29,9 +29,9 @@ const List<String> currenciesList = [
 const List<String> cryptoList = [
   'BTC',
   'ETH',
-  // 'LTC',
-  // 'SOL',
-  // 'IMX'
+  'LTC',
+  'SOL',
+  'IMX'
 ];
 
 class CoinData {
@@ -51,13 +51,9 @@ class CoinData {
 
       if(response.statusCode==200){
         dynamic data = jsonDecode(response.body);
-        // print(url);
-        // print(data);
-        // print(data['rate']);
         cryptoData.add(data);
       }
     }
-    // print(cryptoData);
     return cryptoData;
   }
 

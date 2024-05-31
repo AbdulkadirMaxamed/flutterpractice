@@ -12,7 +12,8 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   String currency = 'GBP';
-  bool isStopped = true;
+  int _pickerIndex = 0;
+  bool running = false;
   List<Padding> childrenList = [];
 
   //need to fix this issue
@@ -24,14 +25,16 @@ class _PriceScreenState extends State<PriceScreen> {
     getCurrencyAmount(currency);
   }
 
+  void iosCurrencyUpdate(int num){
+    getCurrencyAmount(currenciesList[num]);
+  }
+
   getCurrencyAmount(String? currency)async{
     childrenList=[];
-    print(currency);
     CoinData coinData = CoinData();
     dynamic currencyData = await coinData.getData(currency);
     for(dynamic coin in currencyData){
-      // print(coin);
-      // print(coin['rate']);
+      //gets each coin and adds them into their individual widget
       addWidget(coin['asset_id_base'], coin['rate'], coin['asset_id_quote']);
     }
     // print(childrenList);
@@ -104,27 +107,22 @@ class _PriceScreenState extends State<PriceScreen> {
 
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification){
-        if (scrollNotification is ScrollEndNotification) {
-          // Set isStopped to true when scrolling stops
-          isStopped = true;
+        if (scrollNotification is ScrollEndNotification &&
+            scrollNotification.metrics is FixedExtentMetrics) {
+          // Accessing the itemIndex of the centered item
+          int index = (scrollNotification.metrics as FixedExtentMetrics).itemIndex;
+          // Printing the scroll metrics to the console
+          iosCurrencyUpdate(index);
+
+          return true;
         } else {
-          // Set isStopped to false when scrolling starts or continues
-          isStopped = false;
+          return false;
         }
-        return true;
       },
       child: CupertinoPicker(
         itemExtent: 32.0,
         scrollController: FixedExtentScrollController(initialItem: 5),
-        onSelectedItemChanged:(int index)async{
-          //this runs before scrollnotification stops
-
-          print()
-          print(isStopped);
-          if(isStopped==false){
-            print('selector has stopped at $index');
-          }
-        },
+        onSelectedItemChanged:null,
         children: children,
       ),
     );
@@ -155,7 +153,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: iosPicker()
+            child: Platform.isIOS ? iosPicker() : androidPicker()
           ),
         ],
       ),
