@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +62,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                     height: animation.value*100,
                   ),
                 ),
-                Text(
-                  'Flash Chat',
-                  style: TextStyle(
-                    fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
-                  ),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Flash Chat',
+                      textStyle: const TextStyle(
+                        fontSize: 45.0,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      speed: const Duration(milliseconds: 100)
+                    ),
+                  ],
+                  totalRepeatCount: 1,
+                  displayFullTextOnTap: true,
                 ),
               ],
             ),
@@ -88,8 +96,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                   },
                   minWidth: 200.0,
                   height: 42.0,
-                  child: Text(
-                    'Log In',
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      TyperAnimatedText('Log In',
+                      speed: const Duration(milliseconds: 100))
+                    ],
+                    totalRepeatCount: 1,
                   ),
                 ),
               ),
@@ -106,8 +118,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
                   },
                   minWidth: 200.0,
                   height: 42.0,
-                  child: Text(
-                    'Register',
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      TyperAnimatedText('Register',
+                          speed: const Duration(milliseconds: 75))
+                    ],
+                    totalRepeatCount: 1,
                   ),
                 ),
               ),
