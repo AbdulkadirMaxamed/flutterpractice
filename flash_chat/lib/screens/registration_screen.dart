@@ -1,3 +1,4 @@
+import 'package:flash_chat/components/inputTextWidget.dart';
 import 'package:flash_chat/components/widgetBtn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Hero(
               tag:'logo',
-              child: Container(
+              child: SizedBox(
                 height: 200.0,
                 child: Image.asset('images/logo.png'),
               ),
@@ -30,64 +31,47 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             const SizedBox(
               height: 48.0,
             ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: const InputDecoration(
-                hintText: 'Enter your email',
-                contentPadding:
-                EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-              ),
+            inputTextWidget(
+              hintText: 'Enter your email',
+              colour: Colors.blueAccent,
+              onChange: (value){
+
+              }
             ),
             const SizedBox(
               height: 8.0,
             ),
-            TextField(
-              onChanged: (value) {
-                //Do something with the user input.
-              },
-              decoration: const InputDecoration(
-                hintText: 'Enter your password',
-                contentPadding:
-                EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-              ),
+            inputTextWidget(
+              hintText: 'Enter your password',
+              colour: Colors.lightBlueAccent,
+              onChange: (value){
+
+              }
             ),
             const SizedBox(
               height: 24.0,
             ),
             btnWidget(
               color: Colors.blueAccent,
-              btnText: 'Registered',
+              btnText: 'Register',
               onPress: (){
                 Navigator.pushNamed(context, 'welcome_screen');
               }
             ),
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: const Text('Already have an account? Login Here',
+              style: TextStyle(
+                  decoration: TextDecoration.underline
+                ),
+              )
+            )
           ],
         ),
       ),
     );
   }
 }
+

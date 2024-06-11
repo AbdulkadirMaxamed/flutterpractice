@@ -85,6 +85,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
               color: Colors.lightBlueAccent,
               btnText: 'Log In',
               onPress: (){
+                print('pressed');
                 Navigator.pushNamed(context, 'login_screen');
               },
             ),
@@ -92,6 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
               color: Colors.blueAccent,
               btnText: 'Register',
               onPress: (){
+                print('pressed');
                 Navigator.pushNamed(context, 'registration_screen');
               },
             ),
