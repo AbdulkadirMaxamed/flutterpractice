@@ -2,6 +2,7 @@ import 'package:flash_chat/components/inputTextWidget.dart';
 import 'package:flash_chat/components/widgetBtn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -11,6 +12,12 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+
+  final _auth = FirebaseAuth.instance;
+  String email = "";
+  String password = "";
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +42,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               hintText: 'Enter your email',
               colour: Colors.blueAccent,
               onChange: (value){
-
+                email=value;
               }
             ),
             const SizedBox(
@@ -45,7 +52,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               hintText: 'Enter your password',
               colour: Colors.lightBlueAccent,
               onChange: (value){
-
+                password = value;
               }
             ),
             const SizedBox(
@@ -54,8 +61,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             btnWidget(
               color: Colors.blueAccent,
               btnText: 'Register',
-              onPress: (){
-                Navigator.pushNamed(context, 'welcome_screen');
+              onPress: ()async{
+                try {
+                  final credential = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password
+                  );
+                  print("Successfull");
+                  print(credential);
+                }catch(e){
+                  print("failed");
+                  print(e);
+                }
+
               }
             ),
             TextButton(

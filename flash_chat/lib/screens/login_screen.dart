@@ -11,6 +11,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  String? email;
+  String? password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Enter your email',
                 colour: Colors.blueAccent,
                 onChange: (value){
-
+                  email=value;
                 }
             ),
             const SizedBox(
@@ -45,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Enter your password',
                 colour: Colors.lightBlueAccent,
                 onChange: (value){
-
+                  password=value;
                 }
             ),
             const SizedBox(
@@ -56,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
               btnText: 'Log In',
               onPress: (){
                 //log in functionality so some checks before opening the chat page
+
                 Navigator.pushNamed(context, 'chat_screen');
               }
             ),

@@ -8,13 +8,20 @@ class inputTextWidget extends StatelessWidget {
     required this.onChange,
   });
 
+
+
   final String hintText;
   final Color colour;
   final void Function(dynamic) onChange;
 
   @override
   Widget build(BuildContext context) {
+    bool ans = false;
+    if(hintText.contains('password')){
+      ans = true;
+    }
     return TextField(
+      obscureText: ans,
       onChanged: onChange,
       decoration: InputDecoration(
         hintText: hintText,
