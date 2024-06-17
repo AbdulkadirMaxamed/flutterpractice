@@ -1,7 +1,9 @@
 import 'package:flash_chat/components/inputTextWidget.dart';
 import 'package:flash_chat/components/widgetBtn.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -12,8 +14,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  String? email;
-  String? password;
+  final _auth = FirebaseAuth.instance;
+  String email="";
+  String password="";
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +61,25 @@ class _LoginScreenState extends State<LoginScreen> {
             btnWidget(
               color: Colors.lightBlueAccent,
               btnText: 'Log In',
-              onPress: (){
+              onPress: ()async{
                 //log in functionality so some checks before opening the chat page
-
-                Navigator.pushNamed(context, 'chat_screen');
+                print("here");
+                try{
+                  final existingUser = await _auth.signInWithEmailAndPassword(
+                      email: email,
+                      password: password);
+                  print("success");
+                  print(existingUser);
+                  Navigator.pushNamed(context, ChatScreen.id);
+                }on FirebaseAuthException catch (e) {
+                  if (e.code == 'invalid-emai') {
+                    print('Invalid email/password');
+                  } else if (e.code == 'user-not-found') {
+                    print('An account with the following email does not exist.');
+                  }
+                } catch (e) {
+                  print(e);
+                }
               }
             ),
             btnWidget(

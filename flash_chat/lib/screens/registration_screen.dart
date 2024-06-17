@@ -1,5 +1,6 @@
 import 'package:flash_chat/components/inputTextWidget.dart';
 import 'package:flash_chat/components/widgetBtn.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,10 +67,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   final credential = await _auth.createUserWithEmailAndPassword(
                       email: email, password: password
                   );
-                  print("Successfull");
-                  print(credential);
-                }catch(e){
-                  print("failed");
+                  if(credential !=null){
+                    Navigator.pushNamed(context, ChatScreen.id);
+                  }
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
                   print(e);
                 }
 
