@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   print(existingUser);
                   Navigator.pushNamed(context, ChatScreen.id);
                 }on FirebaseAuthException catch (e) {
-                  if (e.code == 'invalid-emai') {
+                  if (e.code == 'invalid-credential') {
                     print('Invalid email/password');
                   } else if (e.code == 'user-not-found') {
                     print('An account with the following email does not exist.');
