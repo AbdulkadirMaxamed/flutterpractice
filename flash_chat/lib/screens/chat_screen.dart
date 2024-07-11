@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String id = 'chat_screen';
@@ -11,7 +12,10 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
 
+  final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  late User user;
+  String ? messageText;
 
   @override
   void initState() {
@@ -21,9 +25,18 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getCurrentUser() async{
-    if(_auth.currentUser!=null){
-      final user = _auth.currentUser;
-      print(user?.email);
+    try{
+      if(_auth.currentUser!=null){
+        print(_auth.currentUser);
+        setState(() {
+          user = _auth.currentUser!;
+        });
+        // setState(() {
+        //   user = _auth.currentUser;
+        // });
+      }
+    }catch (e){
+      print(e);
     }
   }
 
@@ -36,7 +49,6 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                //Implement logout functionality
                 _auth.signOut();
                 Navigator.pop(context);
               }),
@@ -57,14 +69,17 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        //Do something with the user input.
+                        messageText = value;
                       },
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
                   TextButton(
                     onPressed: () {
-                      //Implement send functionality.
+                      _firestore.collection('messages').add({
+                        'text': messageText,
+                        'sender': user.email
+                      });
                     },
                     child: Text(
                       'Send',

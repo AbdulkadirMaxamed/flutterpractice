@@ -82,11 +82,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                   }on FirebaseAuthException catch (e) {
                     if (e.code == 'invalid-credential') {
+                      setState(() {
+                        _showSpinner=false;
+                      });
                       print('Invalid email/password');
                     } else if (e.code == 'user-not-found') {
+                      setState(() {
+                        _showSpinner=false;
+                      });
                       print('An account with the following email does not exist.');
                     }
                   } catch (e) {
+                    setState(() {
+                      _showSpinner=false;
+                    });
                     print(e);
                   }
                 }
