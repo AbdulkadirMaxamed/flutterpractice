@@ -31,13 +31,19 @@ class _ChatScreenState extends State<ChatScreen> {
         setState(() {
           user = _auth.currentUser!;
         });
-        // setState(() {
-        //   user = _auth.currentUser;
-        // });
       }
     }catch (e){
       print(e);
     }
+  }
+
+  void getMessage(){
+    print('here');
+    _firestore.collection('messages').snapshots().listen((event) {
+      for(var docSnapshot in event.docs){
+        print(docSnapshot.data());
+      }
+    });
   }
 
   @override
@@ -49,8 +55,9 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                _auth.signOut();
-                Navigator.pop(context);
+                getMessage();
+                // _auth.signOut();
+                // Navigator.pop(context);
               }),
         ],
         title: Text('⚡️Chat'),
