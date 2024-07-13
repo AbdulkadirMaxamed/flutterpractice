@@ -37,14 +37,14 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void getMessage(){
-    print('here');
-    _firestore.collection('messages').snapshots().listen((event) {
-      for(var docSnapshot in event.docs){
-        print(docSnapshot.data());
-      }
-    });
-  }
+  // void getMessage(){
+  //   print('here');
+  //   _firestore.collection('messages').snapshots().listen((event) {
+  //     for(var docSnapshot in event.docs){
+  //       print(docSnapshot.data());
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +55,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                getMessage();
-                // _auth.signOut();
-                // Navigator.pop(context);
+                _auth.signOut();
+                Navigator.pop(context);
               }),
         ],
         title: Text('⚡️Chat'),
@@ -68,6 +67,33 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+                stream: _firestore.collection('messages').snapshots(),
+                builder: (context, snapshot){
+                  List<MessageBubble> messageBubbles = [];
+                  if (snapshot.hasData) {
+                    final messages = snapshot.data!.docs;
+                    for (var message in messages) {
+                      final messageData = message.data() as Map<String, dynamic>;
+                      final messageText = messageData['text'];
+                      final messageSender = messageData['sender'];
+
+                      final messageBubble = MessageBubble(
+                          sender: messageSender,
+                          text: messageText);
+                      messageBubbles.add(messageBubble);
+                    }
+
+                    return Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                          children: messageBubbles
+                        )
+                    );  // Return a Column containing all the message widgets
+                  } else {
+                    return CircularProgressIndicator();  // Handle the loading state
+                  }
+                }),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -98,6 +124,40 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  const MessageBubble({super.key, required this.sender, required this.text});
+
+  final String sender;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(sender),
+          Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(30.0),
+            color: Colors.blue,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                  text,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white)
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
