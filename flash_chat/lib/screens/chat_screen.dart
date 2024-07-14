@@ -38,15 +38,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // void getMessage(){
-  //   print('here');
-  //   _firestore.collection('messages').snapshots().listen((event) {
-  //     for(var docSnapshot in event.docs){
-  //       print(docSnapshot.data());
-  //     }
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +107,7 @@ class MessageStream extends StatelessWidget {
         builder: (context, snapshot){
           List<MessageBubble> messageBubbles = [];
           if (snapshot.hasData) {
-            final messages = snapshot.data!.docs;
+            final messages = snapshot.data!.docs.reversed;
             for (var message in messages) {
               final messageData = message.data() as Map<String, dynamic>;
               final messageText = messageData['text'];
@@ -134,7 +125,8 @@ class MessageStream extends StatelessWidget {
 
             return Expanded(
                 child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                    reverse: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
                     children: messageBubbles
                 )
             );  // Return a Column containing all the message widgets
@@ -155,62 +147,37 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(isMe==true){
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(sender),
-            Material(
-              elevation: 5.0,
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                  topLeft: Radius.circular(30)
-              ),
-              color: Colors.blueAccent,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                    text,
-                    style: const TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white)
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Text(sender),
+          Material(
+            elevation: 5.0,
+            borderRadius: isMe ? const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+                topLeft: Radius.circular(30)) : const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+                topRight: Radius.circular(30)
+            ),
+            color: isMe ? Colors.blueAccent : Colors.grey,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                  text,
+                  style: const TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white
+                  ),
+                textAlign: TextAlign.center,
               ),
             ),
-          ],
-        ),
-      );
-    }else{
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(sender),
-            Material(
-              elevation: 5.0,
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                  topRight: Radius.circular(30)
-              ),
-              color: Colors.grey,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                    text,
-                    style: const TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white)
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }
