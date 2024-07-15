@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:todo_app/widgets/task_list.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});
@@ -9,6 +10,13 @@ class TasksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          print('button pressed');
+        },
+        backgroundColor: Colors.lightBlueAccent,
+        child: Icon(Icons.add),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -46,14 +54,53 @@ class TasksScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
               ),
+              child: TaskList(),
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+
+
+
+class CheckedBox extends StatefulWidget {
+  const CheckedBox({super.key});
+
+  @override
+  State<CheckedBox> createState() => _CheckedBoxState();
+}
+
+class _CheckedBoxState extends State<CheckedBox> {
+
+  bool checkedState = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+        value: checkedState,
+        onChanged: (value){
+          print(checkedState);
+          print(value);
+          if(value==true){
+            print('$checkedState has now changed to false');
+            setState(() {
+              checkedState=false;
+            });
+          }else{
+            print('$checkedState has now changed to true');
+            setState(() {
+              checkedState=true;
+            });
+          }
+        }
     );
   }
 }
