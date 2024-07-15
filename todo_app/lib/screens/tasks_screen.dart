@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:todo_app/screens/add_task_screen.dart';
 import 'package:todo_app/widgets/task_list.dart';
 
 class TasksScreen extends StatelessWidget {
@@ -12,17 +13,30 @@ class TasksScreen extends StatelessWidget {
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          print('button pressed');
+          showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) =>
+          //wraps the popup around the keyboard
+            SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom
+                ),
+                child: AddTaskScreen()
+              )
+            )
+          );
         },
         backgroundColor: Colors.lightBlueAccent,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.only(top: 60.0, left: 30.0, right: 30.0, bottom: 30.0),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
@@ -55,7 +69,7 @@ class TasksScreen extends StatelessWidget {
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
               ),
