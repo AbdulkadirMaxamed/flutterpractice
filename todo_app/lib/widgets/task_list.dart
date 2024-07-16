@@ -27,8 +27,7 @@ class _TaskListState extends State<TaskList> {
           isChecked: tasks[index].isDone,
           checkedBoxCallBack: (bool? checkbox){
             setState(() {
-              tasks[index].isDone=checkbox??false;
-              print(tasks[index].isDone);
+              tasks[index].toggleDone();
             });
           }
         );
