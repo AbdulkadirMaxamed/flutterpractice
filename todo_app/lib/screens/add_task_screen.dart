@@ -48,6 +48,7 @@ class AddTaskScreen extends StatelessWidget {
               ),
               onPressed: (){
                 print('hello');
+                Navigator.pop(context);
               },
               child: const Text('Add',
                 style: TextStyle(
