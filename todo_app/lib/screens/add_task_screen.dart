@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddTaskScreen extends StatelessWidget {
+  const AddTaskScreen({super.key, required this.addTaskCallback});
+
+  final Function addTaskCallback;
 
   @override
   Widget build(BuildContext context) {
+    String? newTaskTitle;
     return Container(
       color: const Color(0xff757575),
       child: Container(
@@ -30,14 +34,17 @@ class AddTaskScreen extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               )
             ),
-            const TextField(
+            TextField(
               autofocus: true,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.lightBlueAccent),
                 ),
               ),
+              onChanged: (newText){
+                newTaskTitle = newText;
+              },
             ),
             const SizedBox(
               height: 10.0,
@@ -47,7 +54,7 @@ class AddTaskScreen extends StatelessWidget {
                 backgroundColor: MaterialStatePropertyAll(Colors.lightBlueAccent)
               ),
               onPressed: (){
-                print('hello');
+                addTaskCallback(newTaskTitle);
                 Navigator.pop(context);
               },
               child: const Text('Add',
