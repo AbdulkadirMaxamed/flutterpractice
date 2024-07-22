@@ -19,8 +19,6 @@ class TaskData extends ChangeNotifier{
       Task(name: title)
     );
 
-    for (var task in tasks) {
-      print(task.name);
-    }
+    notifyListeners();
   }
 }
