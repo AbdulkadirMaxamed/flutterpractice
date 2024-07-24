@@ -13,15 +13,10 @@ class TaskTile extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ListTile(
-      title: TextButton(
-        onPressed: (){
-
-        },
-        onLongPress: deleteTaskItem,
-        child: Text(taskTitle,
-          style: TextStyle(
-              decoration: isChecked ? TextDecoration.lineThrough : TextDecoration.none
-          ),
+      onLongPress: deleteTaskItem,
+      title: Text(taskTitle,
+        style: TextStyle(
+            decoration: isChecked ? TextDecoration.lineThrough : TextDecoration.none
         ),
       ),
       trailing: Checkbox(
